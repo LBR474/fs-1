@@ -36,7 +36,7 @@ const MyAnimatingTorus = forwardRef<CustomMesh, MyAnimatingTorusProps>(
     );
   }
 );
-
+MyAnimatingTorus.displayName = 'MyAnimatingTorus'
 // Home component
 export default function Home() {
   const homeMeshRef = useRef<THREE.Mesh>(null);
