@@ -17,7 +17,7 @@ import {
 
 import gsap from "gsap";
 
-import ScrollPage from "./ScrollPage";
+// import ScrollPage from "./ScrollPage";
 
 type CustomMesh = THREE.Mesh<
   THREE.BufferGeometry<THREE.NormalBufferAttributes>,
