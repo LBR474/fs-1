@@ -38,14 +38,15 @@
 }
 
 .mmenuMessage {
-  position: absolute;
-  top: 300px;
-  left: 300px;
-  height: 10vh;
-  width: 30vw;
+  position: fixed;
+  top: 10vh;
+  left: 10vw;
+  height: fit-content;
+  width: 80vw;
   color: white;
-  border: 2px solid aqua;
+  border: 2px solid rgb(8, 0, 255);
   opacity: 1;
-  padding-left: 5.2em;
+  padding: 2%;
+  text-align: center;
   
 }
