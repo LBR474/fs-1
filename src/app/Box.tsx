@@ -55,13 +55,26 @@ const ForwardedTorus = React.forwardRef(Torus);
 export default function BoxHome() {
   const torusRef = useRef<THREE.Mesh>(null);
   const [messageHovered, setMessageHover] = useState(true);
-  const [hoverCount, setHoverCount] = useState(0);
+  const [hoverCount, setHoverCount] = useState(-1);
+  const menuItems = [
+    "Menu Item One",
+    "Menu Item Two",
+    "Menu Item Three",
+    "Menu Item Four",
+    "Menu Item Five",
+    "Menu Item Six",
+    "Menu Item Seven",
+    "Menu Item Eight",
+    "Menu Item Nine",
+    "Menu Item Ten",
+  ];
   const handleTorusHover = () => {
-    
-    if (hoverCount === 0) {
+    if (hoverCount === -1) {
+      setHoverCount(0);
       setMessageHover(false);
+    } else {
+      setHoverCount((hoverCount + 1) % menuItems.length);
     }
-    setHoverCount(hoverCount + 1);
   };
   return (
     <>
@@ -71,9 +84,9 @@ export default function BoxHome() {
       >
         <div className={styles.mmenuMessage}>
           {!messageHovered ? (
-            <h2>{hoverCount === 1 ? "Menu Item One" : "Menu Item Two"}</h2>
+            <h2>{menuItems[hoverCount % menuItems.length]}</h2>
           ) : (
-            <h2>mouse over torus to see menu items</h2>
+            <h2>Mouse over torus to see menu items</h2>
           )}
         </div>
         <Canvas>
