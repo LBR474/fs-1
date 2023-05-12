@@ -17,58 +17,47 @@ import {
 
 import gsap from "gsap";
 
-// import ScrollPage from "./ScrollPage";
+ import ScrollPage from "./ScrollPage";
 
-type CustomMesh = THREE.Mesh<
-  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-  THREE.Material | THREE.Material[]
->;
+import OnPointerOverPage from "./OnPointerOverPage";
 
-type MyAnimatingTorusProps = {
-  ref: RefObject<THREE.Mesh>;
-};
+import BoxHome from "./Box";
 
-const MyAnimatingTorus = forwardRef<CustomMesh, MyAnimatingTorusProps>(
-  (props, ref) => {
-    const texture = new TextureLoader().load(
-      "https://threejs.org/examples/textures/water.jpg"
-    );
-    texture.wrapS = texture.wrapT = RepeatWrapping;
-    texture.repeat.set(10, 10);
+//
+//
+//
+//
+//
+//
+//
 
-    return (
-      <mesh ref={ref} rotation={[Math.PI / 2, 0, 0]}>
-        <torusGeometry />
-        <meshStandardMaterial map={texture} wireframe={true} />
-      </mesh>
-    );
-  }
-);
-MyAnimatingTorus.displayName = "MyAnimatingTorus";
 // Home component
+
+
+
 export default function Home() {
   // handle scroll gesture
-
-  const homeMeshRef = useRef<THREE.Mesh>(null);
-
-  const handleClick = () => {
-    console.log("Called");
-    gsap.to(homeMeshRef.current!.rotation, {
-      duration: 2,
-
-      z: "+=2",
-    });
-  };
 
   return (
     <>
       {/* <ScrollPage /> */}
-      <div className={styles.CContainer} onScroll={handleClick}>
-        <div className={styles.mainCanvas} onScroll={handleClick}>
+      {/* <OnPointerOverPage /> */}
+      <BoxHome />
+      {/* <div className={styles.CContainer} onPointerEnter={handleOpacity}>
+        <div
+          className={styles.mainCanvas}
+          onPointerEnter={handleTorusOver}
+          onPointerLeave={handleMouseOut}
+        >
+          <div className={styles.mmenuMessage} ref={opacityDivRef}>
+            {!isTorusHovered && <h2> mouse over torus to see menu items</h2>}
+          </div>
           <Canvas>
             <directionalLight color="white" position={[0, 10, 15]} />
 
-            <MyAnimatingTorus ref={homeMeshRef} />
+            <group onPointerOver={handleMouseOver}>
+              <MyAnimatingTorus ref={homeMeshRef} />
+            </group>
 
             <Stars
               radius={100}
@@ -81,7 +70,7 @@ export default function Home() {
             />
           </Canvas>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
