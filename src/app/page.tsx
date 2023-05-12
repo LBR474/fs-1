@@ -17,9 +17,9 @@ import {
 
 import gsap from "gsap";
 
- import ScrollPage from "./ScrollPage";
+// import ScrollPage from "./ScrollPage";
 
-import OnPointerOverPage from "./OnPointerOverPage";
+// import OnPointerOverPage from "./OnPointerOverPage";
 
 import BoxHome from "./Box";
 
