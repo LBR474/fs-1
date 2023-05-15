@@ -1,3 +1,8 @@
 {
-  "workbench.colorTheme": "Functional Contrast Dark Ember"
+  "workbench.colorTheme": "Default High Contrast",
+  "workbench.colorCustomizations": {
+
+    // "editor.background": "#0000FF"
+
+  }
 }

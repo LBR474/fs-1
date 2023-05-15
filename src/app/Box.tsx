@@ -4,7 +4,10 @@ import React, { useRef, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import styles from "./page.module.css";
-import { TextureLoader, RepeatWrapping } from "three";
+import { TextureLoader, RepeatWrapping, ShaderMaterial } from "three";
+
+import { useLoader } from "@react-three/fiber";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 function Torus(
   props: ThreeElements["mesh"],
@@ -13,17 +16,23 @@ function Torus(
   const mesh = useRef<THREE.Mesh>(null!);
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
-  //useFrame((state, delta) => (mesh.current.rotation.z += delta));
+  const glb = useLoader(GLTFLoader, "/bandy-bandy-torus.glb");
 
-  const texture = new TextureLoader().load(
-    "https://threejs.org/examples/textures/water.jpg"
-  );
-  texture.wrapS = texture.wrapT = RepeatWrapping;
-  texture.repeat.set(10, 10);
+ 
 
+  
+
+const [revSpin, setRevSpin] = useState(false)
   useFrame((state, delta) => {
-    if (hovered) {
-      mesh.current.rotation.z += delta; // Adjust the rotation as needed
+    if (hovered 
+      //&& revSpin
+      ) {
+      mesh.current.rotation.y += delta; 
+      
+    } else if (hovered 
+      //&& !revSpin
+      ) {
+      mesh.current.rotation.y -= delta;
     }
   });
 
@@ -33,27 +42,56 @@ function Torus(
       {...props}
       ref={mesh}
       scale={active ? 1.5 : 1}
-      rotation={[Math.PI / -3, 0, 0]}
+      rotation={[Math.PI / 6, 0, 0]}
+      position={[0, -1, 0]}
       onClick={(event) => setActive(!active)}
-      onPointerOver={(event) => setHover(true)
-      }
-      onPointerOut={(event) => setHover(false)}
+      onPointerOver={(event) => {
+        if (!hovered) {
+          setHover(true);
+          if (event.clientX > 600) {
+            setRevSpin(true);
+          } else {
+            setRevSpin(false);
+          }
+        }
+      }}
+      onPointerOut={() => {
+        setHover(false);
+      }}
     >
-      <torusGeometry args={[1, 0.4, 16, 100]} />
-      <meshStandardMaterial
-        map={texture}
-        color={hovered ? "hotpink" : "orange"}
-      />
+      <primitive object={glb.scene.clone()} />
     </mesh>
   );
 }
-Torus.displayName = 'Torus'
+Torus.displayName = "Torus";
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// BoxHome function area begins
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 // Use the React.forwardRef function to create a new component that forwards the ref to the Torus component
 const ForwardedTorus = React.forwardRef(Torus);
 
 export default function BoxHome() {
   const torusRef = useRef<THREE.Mesh>(null);
+
   const [messageHovered, setMessageHover] = useState(true);
   const [hoverCount, setHoverCount] = useState(-1);
   const menuItems = [
@@ -68,14 +106,21 @@ export default function BoxHome() {
     "Menu Item Nine",
     "Menu Item Ten",
   ];
-  const handleTorusHover = () => {
-    if (hoverCount === -1) {
-      setHoverCount(0);
-      setMessageHover(false);
-    } else {
-      setHoverCount((hoverCount + 1) % menuItems.length);
-    }
-  };
+
+  const [mouseCoordinates, setMouseCoordinates] = useState({ x: 0, y: 0 });
+ const handleTorusHover = () => {
+   if (hoverCount === -1) {
+     setHoverCount(0);
+     setMessageHover(false);
+   } else {
+     setTimeout(() => {
+       setHoverCount((hoverCount + 1) % menuItems.length);
+       setMessageHover(false);
+     }, 200); // Adjust the delay (in milliseconds) between each menu item appearance if needed
+   }
+ };
+
+ 
   return (
     <>
       <div
@@ -89,13 +134,22 @@ export default function BoxHome() {
             <h2>Mouse over torus to see menu items</h2>
           )}
         </div>
-        <Canvas>
+        <Canvas 
+        //onPointerMove={handlePointerMove}
+        >
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
           <ForwardedTorus
             ref={torusRef}
             position={[0, 0, 0]}
-            onPointerEnter={handleTorusHover}
+            onPointerEnter={() => {
+              handleTorusHover();
+              // Call your second function here
+            }}
+            // onPointerMove={(e) => {
+            //   setMouseCoordinates({ x: e.clientX, y: e.clientY });
+              
+            // }}
           />
 
           {/* <Box position={[1.2, 0, 0]} /> */}

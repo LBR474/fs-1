@@ -21,7 +21,14 @@ import gsap from "gsap";
 
 // import OnPointerOverPage from "./OnPointerOverPage";
 
-import BoxHome from "./Box";
+//import BoxHome from "./Box";
+
+import BoxHome_3 from "./Box_3";
+
+//import TorusPage from "./BBT";
+
+//import TorusPage from "./Bandy";
+
 
 //
 //
@@ -36,41 +43,12 @@ import BoxHome from "./Box";
 
 
 export default function Home() {
-  // handle scroll gesture
+   
 
+   
   return (
     <>
-      {/* <ScrollPage /> */}
-      {/* <OnPointerOverPage /> */}
-      <BoxHome />
-      {/* <div className={styles.CContainer} onPointerEnter={handleOpacity}>
-        <div
-          className={styles.mainCanvas}
-          onPointerEnter={handleTorusOver}
-          onPointerLeave={handleMouseOut}
-        >
-          <div className={styles.mmenuMessage} ref={opacityDivRef}>
-            {!isTorusHovered && <h2> mouse over torus to see menu items</h2>}
-          </div>
-          <Canvas>
-            <directionalLight color="white" position={[0, 10, 15]} />
-
-            <group onPointerOver={handleMouseOver}>
-              <MyAnimatingTorus ref={homeMeshRef} />
-            </group>
-
-            <Stars
-              radius={100}
-              depth={50}
-              count={5000}
-              factor={8}
-              saturation={0}
-              fade
-              speed={1}
-            />
-          </Canvas>
-        </div>
-      </div> */}
+      <BoxHome_3 />
     </>
   );
 }
