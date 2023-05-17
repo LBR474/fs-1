@@ -6,7 +6,7 @@ import styles from "./page.module.css";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import React from "react";
-import { ThreeEvent } from "@react-three/fiber";
+import gsap from "gsap";
 
 function Torus(props: JSX.IntrinsicElements["mesh"]) {
   const mesh = useRef<THREE.Mesh>(null!);
@@ -14,73 +14,63 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
   const meshBlue = useRef<THREE.Mesh>(null!);
   const [isHovered, setHovered] = useState(false);
   const [isHoveredBlue, setHoveredBlue] = useState(false);
-  const [spinDirection, setSpinDirection] = useState(1);
-  const box = useRef<THREE.Box3>(new THREE.Box3());
- 
+  
   const menuItems = [
-    "Menu item one",
-    "Menu item two",
-    "Menu item three",
-    "Menu item four",
-    "Menu item five",
-    "Menu item six",
-    "Menu item seven",
-    "Menu item eight",
-    "Menu item nine",
-    "Menu item ten",
+    "End poverty",
+    "Clean, abundant water",
+    "Online government",
+    "Direct your taxes",
+    "Disclosure",
+    "Focus on peace",
+    "End the war on drugs",
+    "Free education",
+    "Free healthcare",
+    "No more jobs",
   ];
 
   useFrame(() => {
     if (isHovered && mesh.current) {
       mesh.current.rotation.y += 0.01;
-     
     } else if (isHoveredBlue && mesh.current) {
       mesh.current.rotation.y -= 0.01;
-     
     }
   });
 
-useEffect(() => {
-  const mmenuMessage = document.querySelector(
-    `.${styles.mmenuMessage}`
-  ) as HTMLDivElement;
+  useEffect(() => {
+    const mmenuMessage = document.querySelector(
+      `.${styles.mmenuMessage_1}`
+    ) as HTMLDivElement;
 
-  const startMenuItem = mmenuMessage.textContent || "";
-  let index = menuItems.indexOf(startMenuItem);
+    const startMenuItem = mmenuMessage.textContent || "";
+    let index = menuItems.indexOf(startMenuItem);
 
-  let interval: NodeJS.Timeout | null = null;
+    let interval: NodeJS.Timeout | null = null;
 
-  const changeMenuItem = () => {
-    if (isHovered) {
-      index = (index + 1) % menuItems.length;
-    } else if (isHoveredBlue) {
-      index = (index - 1 + menuItems.length) % menuItems.length;
-    }
-    mmenuMessage.textContent = menuItems[index];
-  };
+    const changeMenuItem = () => {
+      if (isHovered) {
+        index = (index + 1) % menuItems.length;
+      } else if (isHoveredBlue) {
+        index = (index - 1 + menuItems.length) % menuItems.length;
+      }
+      mmenuMessage.textContent = menuItems[index];
+    };
 
-  const startChangingMenuItems = () => {
-    interval = setInterval(changeMenuItem, 500);
-  };
+    const startChangingMenuItems = () => {
+      interval = setInterval(changeMenuItem, 500);
+    };
 
-  const stopChangingMenuItems = () => {
-    if (interval) {
-      clearInterval(interval);
-      interval = null;
-    }
-  };
+    const stopChangingMenuItems = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
 
-  startChangingMenuItems();
+    startChangingMenuItems();
 
-  return stopChangingMenuItems;
-}, [isHovered, isHoveredBlue, menuItems]);
+    return stopChangingMenuItems;
+  }, [isHovered, isHoveredBlue, menuItems]);
 
-
-
-
-  
-
- 
   const glb = useLoader(GLTFLoader, "/bandy-bandy-torus.glb");
 
   return (
@@ -121,41 +111,43 @@ useEffect(() => {
   );
 }
 
-
-
-
 export default function BoxHome_3() {
-  
   useEffect(() => {
-    const mmenuMessage = document.querySelector(
-      `.${styles.mmenuMessage}`
+    const openingMessage = document.querySelector(
+      `.${styles.openingMessage}`
     ) as HTMLDivElement;
-    if (mmenuMessage) {
-      mmenuMessage.textContent = "Menu item one";
-    }
+    // if (mmenuMessage) {
+    //   mmenuMessage.textContent = "Menu item one";
+    // }
+    gsap.to(openingMessage, {
+      opacity: 0,
+      duration: 3,
+
+    })
   }, []);
 
- return (
-   <>
-     <div className={styles.CContainer}>
-       <div className={styles.mmenuMessage}></div>
-       <Canvas>
-         <ambientLight />
-         <pointLight position={[10, 10, 10]} />
+  return (
+    <>
+      <div className={styles.floatLeft}>
+        <div className={styles.mmenuMessage_1}></div>
+        <div className={styles.openingMessage}>Mouse over torus to see policies</div>
+        <Canvas>
+          <ambientLight />
+          <pointLight position={[10, 10, 10]} />
 
-         <Torus position={[0, 0, 0]}  />
+          <Torus position={[0, 0, 0]} />
 
-         <Stars
-           radius={100}
-           depth={50}
-           count={5000}
-           factor={8}
-           saturation={0}
-           fade
-           speed={1}
-         />
-       </Canvas>
-     </div>
-   </>
- );
+          <Stars
+            radius={100}
+            depth={50}
+            count={5000}
+            factor={8}
+            saturation={0}
+            fade
+            speed={1}
+          />
+        </Canvas>
+      </div>
+    </>
+  );
 }

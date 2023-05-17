@@ -25,6 +25,8 @@ import gsap from "gsap";
 
 import BoxHome_3 from "./Box_3";
 
+import BoxHome_4 from "./Box_4";
+
 //import TorusPage from "./BBT";
 
 //import TorusPage from "./Bandy";
@@ -40,7 +42,9 @@ import BoxHome_3 from "./Box_3";
 
 // Home component
 
-
+// {
+//   /* <BoxHome_3 /> */
+// }
 
 export default function Home() {
    
