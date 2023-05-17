@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import styles from "./page.module.css";
@@ -15,18 +15,9 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
   const [isHovered, setHovered] = useState(false);
   const [isHoveredBlue, setHoveredBlue] = useState(false);
   
-  const menuItems = [
-    "End poverty",
-    "Clean, abundant water",
-    "Online government",
-    "Direct your taxes",
-    "Disclosure",
-    "Focus on peace",
-    "End the war on drugs",
-    "Free education",
-    "Free healthcare",
-    "No more jobs",
-  ];
+
+  
+  
 
   useFrame(() => {
     if (isHovered && mesh.current) {
@@ -37,6 +28,18 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
   });
 
   useEffect(() => {
+    const menuItems = [
+      "End poverty",
+      "Clean, abundant water",
+      "Online government",
+      "Direct your taxes",
+      "Disclosure",
+      "Focus on peace",
+      "End the war on drugs",
+      "Free education",
+      "Free healthcare",
+      "No more jobs",
+    ];
     const mmenuMessage = document.querySelector(
       `.${styles.mmenuMessage_1}`
     ) as HTMLDivElement;
@@ -69,7 +72,7 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
     startChangingMenuItems();
 
     return stopChangingMenuItems;
-  }, [isHovered, isHoveredBlue, menuItems]);
+  }, [isHovered, isHoveredBlue]);
 
   const glb = useLoader(GLTFLoader, "/bandy-bandy-torus.glb");
 

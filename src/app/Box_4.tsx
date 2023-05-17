@@ -1,27 +1,19 @@
 import * as THREE from "three";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import styles from "./page.module.css";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import React from "react";
-import { ThreeEvent } from "@react-three/fiber";
+import gsap from "gsap";
 
-function Torus(
-  props: JSX.IntrinsicElements["mesh"] & { onTorusPointerOver: (isHovered: boolean,
-    isHoveredBlue: boolean) => void;
-  } 
-) {
+function Torus(props: JSX.IntrinsicElements["mesh"]) {
   const mesh = useRef<THREE.Mesh>(null!);
   const meshRed = useRef<THREE.Mesh>(null!);
   const meshBlue = useRef<THREE.Mesh>(null!);
   const [isHovered, setHovered] = useState(false);
   const [isHoveredBlue, setHoveredBlue] = useState(false);
-
-  const handlePointerOver = () => {
-    props.onTorusPointerOver(isHovered, isHoveredBlue);
-  };
 
   useFrame(() => {
     if (isHovered && mesh.current) {
@@ -30,6 +22,53 @@ function Torus(
       mesh.current.rotation.y -= 0.01;
     }
   });
+
+  useEffect(() => {
+    const menuItems = [
+      "End poverty",
+      "Clean, abundant water",
+      "Online government",
+      "Direct your taxes",
+      "Disclosure",
+      "Focus on peace",
+      "End the war on drugs",
+      "Free education",
+      "Free healthcare",
+      "No more jobs",
+    ];
+    const mmenuMessage = document.querySelector(
+      `.${styles.mmenuMessage_1}`
+    ) as HTMLDivElement;
+
+    const startMenuItem = mmenuMessage.textContent || "";
+    let index = menuItems.indexOf(startMenuItem);
+
+    let interval: NodeJS.Timeout | null = null;
+
+    const changeMenuItem = () => {
+      if (isHovered) {
+        index = (index + 1) % menuItems.length;
+      } else if (isHoveredBlue) {
+        index = (index - 1 + menuItems.length) % menuItems.length;
+      }
+      mmenuMessage.textContent = menuItems[index];
+    };
+
+    const startChangingMenuItems = () => {
+      interval = setInterval(changeMenuItem, 500);
+    };
+
+    const stopChangingMenuItems = () => {
+      if (interval) {
+        clearInterval(interval);
+        interval = null;
+      }
+    };
+
+    startChangingMenuItems();
+
+    return stopChangingMenuItems;
+  }, [isHovered, isHoveredBlue]);
 
   const glb = useLoader(GLTFLoader, "/bandy-bandy-torus.glb");
 
@@ -47,7 +86,6 @@ function Torus(
         ref={meshRed}
         onPointerOver={() => {
           setHovered(true);
-          props.onTorusPointerOver(true, false);
         }}
         onPointerOut={() => setHovered(false)}
         position={[0, -1, 0]}
@@ -60,7 +98,6 @@ function Torus(
         ref={meshBlue}
         onPointerOver={() => {
           setHoveredBlue(true);
-          props.onTorusPointerOver(false, true);
         }}
         onPointerOut={() => setHoveredBlue(false)}
         position={[0, -1, 0]}
@@ -73,77 +110,33 @@ function Torus(
   );
 }
 
-export default function BoxHome_4() {
-  const BHdivMenuItems = [
-    // <div style={{ color: "red" }}>Menu item one</div>,
-    <div>Mouse over torus to scroll policies</div>,
-    <div>End poverty</div>,
-    <div>Clean, abundant water</div>,
-    <div>Online government</div>,
-    <div>Direct your taxes</div>,
-    <div>Disclosure</div>,
-    <div>Focus on peace</div>,
-    <div>End the war on drugs</div>,
-    <div>Free education</div>,
-    <div>Free healthcare</div>,
-    <div>No more jobs</div>,
-  ];
-  const [currentMenuItem, setCurrentMenuItem] = useState(BHdivMenuItems[0]);
-  const [isHovered, setHovered] = useState(false);
-  const [isHoveredBlue, setHoveredBlue] = useState(false);
-
-  const handleTorusPointerOver = (
-    isHovered: boolean,
-    isHoveredBlue: boolean
-  ) => {
-    setCurrentMenuItem((prevMenuItem) => {
-      const currentIndex = BHdivMenuItems.findIndex(
-        (item) => item.props.children === prevMenuItem.props.children
-      );
-      let nextIndex;
-      if (isHovered) {
-        nextIndex = (currentIndex + 1) % BHdivMenuItems.length;
-        
-    
-      } else if (isHoveredBlue) {
-        nextIndex =
-          (currentIndex - 1 + BHdivMenuItems.length) % BHdivMenuItems.length;
-      } else {
-        // No scrolling if neither isHovered nor isHoveredBlue is true
-        return prevMenuItem;
-      }
-      return BHdivMenuItems[nextIndex];
+export default function BoxHome_3() {
+  useEffect(() => {
+    const openingMessage = document.querySelector(
+      `.${styles.openingMessage}`
+    ) as HTMLDivElement;
+    // if (mmenuMessage) {
+    //   mmenuMessage.textContent = "Menu item one";
+    // }
+    gsap.to(openingMessage, {
+      opacity: 0,
+      duration: 3,
     });
-  };
-
-  let menuItems = [
-    "Mouse over torus to scroll policies",
-    "End poverty",
-    "End poverty",
-    "Clean, abundant water",
-    "Online government",
-    "Direct your taxes",
-    "Disclosure",
-    "Focus on peace",
-    "End the war on drugs",
-    "Free education",
-    "Free healthcare",
-    "No more jobs",
-  ];
-
+  }, []);
 
   return (
     <>
-      <div className={styles.floatLeft} style={{ flex: 1, height: "100vh" }}>
-        <div className={styles.mmenuMessage}>{currentMenuItem}</div>
+      <div className={styles.floatLeft}>
+        <div className={styles.mmenuMessage_1}></div>
+        <div className={styles.openingMessage}>
+          Mouse over torus to see policies
+        </div>
         <Canvas>
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
-          <Torus
-            position={[0, 0, 0]}
-            onTorusPointerOver={handleTorusPointerOver}
-            
-          />
+
+          <Torus position={[0, 0, 0]} />
+
           <Stars
             radius={100}
             depth={50}
@@ -154,9 +147,6 @@ export default function BoxHome_4() {
             speed={1}
           />
         </Canvas>
-      </div>
-      <div className={styles.floatRight}>
-        {/* <img src={menuImage} alt="Menu" style={{ width: "100%", height: "100%" }} /> */}
       </div>
     </>
   );
