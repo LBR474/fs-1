@@ -8,20 +8,22 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import React from "react";
 import gsap from "gsap";
 
-function Torus(props: JSX.IntrinsicElements["mesh"]) {
+function Torus(
+  props: JSX.IntrinsicElements["mesh"] & {
+    setisHoveredP: (arg0: boolean) => void;
+  } & { isHoveredP: any, setisHoveredP: (arg0: boolean) => void }
+) {
   const mesh = useRef<THREE.Mesh>(null!);
   const meshRed = useRef<THREE.Mesh>(null!);
   const meshBlue = useRef<THREE.Mesh>(null!);
   const [isHovered, setHovered] = useState(false);
   const [isHoveredBlue, setHoveredBlue] = useState(false);
-  
-
-  
-  
 
   useFrame(() => {
     if (isHovered && mesh.current) {
       mesh.current.rotation.y += 0.01;
+      props.setisHoveredP(true);
+      console.log(props.isHoveredP);
     } else if (isHoveredBlue && mesh.current) {
       mesh.current.rotation.y -= 0.01;
     }
@@ -115,6 +117,9 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
 }
 
 export default function BoxHome_3() {
+
+  const [isHoveredP, setisHoveredP] = useState(false)
+
   useEffect(() => {
     const openingMessage = document.querySelector(
       `.${styles.openingMessage}`
@@ -122,23 +127,30 @@ export default function BoxHome_3() {
     // if (mmenuMessage) {
     //   mmenuMessage.textContent = "Menu item one";
     // }
+    if (isHoveredP) {
     gsap.to(openingMessage, {
       opacity: 0,
       duration: 3,
-
-    })
-  }, []);
+      
+    })}
+  }, [isHoveredP]);
 
   return (
     <>
       <div className={styles.floatLeft}>
         <div className={styles.mmenuMessage_1}></div>
-        <div className={styles.openingMessage}>Mouse over torus to see policies</div>
+        <div className={styles.openingMessage}>
+          Mouse over torus to see policies
+        </div>
         <Canvas>
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
 
-          <Torus position={[0, 0, 0]} />
+          <Torus
+            position={[0, 0, 0]}
+            isHoveredP={isHoveredP}
+            setisHoveredP={setisHoveredP}
+          />
 
           <Stars
             radius={100}

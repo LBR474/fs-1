@@ -7,17 +7,27 @@ import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import React from "react";
 import gsap from "gsap";
+import ReactDOM from "react-dom";
 
-function Torus(props: JSX.IntrinsicElements["mesh"]) {
+
+function Torus(
+  props: JSX.IntrinsicElements["mesh"] & {
+    setisHoveredP: (arg0: boolean) => void;
+  } & { isHoveredP: any; setisHoveredP: (arg0: boolean) => void }
+) {
   const mesh = useRef<THREE.Mesh>(null!);
   const meshRed = useRef<THREE.Mesh>(null!);
   const meshBlue = useRef<THREE.Mesh>(null!);
   const [isHovered, setHovered] = useState(false);
   const [isHoveredBlue, setHoveredBlue] = useState(false);
 
+  const mmenuMessageRef = useRef<HTMLDivElement>(null);
+
   useFrame(() => {
     if (isHovered && mesh.current) {
       mesh.current.rotation.y += 0.01;
+      props.setisHoveredP(true);
+      console.log(props.isHoveredP);
     } else if (isHoveredBlue && mesh.current) {
       mesh.current.rotation.y -= 0.01;
     }
@@ -36,22 +46,36 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
       "Free healthcare",
       "No more jobs",
     ];
+
     const mmenuMessage = document.querySelector(
       `.${styles.mmenuMessage_1}`
     ) as HTMLDivElement;
 
-    const startMenuItem = mmenuMessage.textContent || "";
-    let index = menuItems.indexOf(startMenuItem);
+    let startMenuItem = mmenuMessage?.textContent || "";
 
+    if (!startMenuItem) {
+      startMenuItem = menuItems[0];
+    }
+    let index = -1; // Set initial index to -1 (invalid index)
     let interval: NodeJS.Timeout | null = null;
 
     const changeMenuItem = () => {
       if (isHovered) {
         index = (index + 1) % menuItems.length;
+        if (mmenuMessage) {
+           mmenuMessage.innerHTML = `<div class="${styles.subDiv}">${menuItems[index]}</div>`;
+        }
       } else if (isHoveredBlue) {
         index = (index - 1 + menuItems.length) % menuItems.length;
+        if (mmenuMessage) {
+          mmenuMessage.innerHTML = `<div>${menuItems[index]}</div>`;
+        }
+      } else {
+        // Torus is not hovered, clear the mmenuMessage_1 div
+        if (mmenuMessage) {
+          mmenuMessage.innerHTML = "";
+        }
       }
-      mmenuMessage.textContent = menuItems[index];
     };
 
     const startChangingMenuItems = () => {
@@ -110,7 +134,9 @@ function Torus(props: JSX.IntrinsicElements["mesh"]) {
   );
 }
 
-export default function BoxHome_3() {
+export default function BoxHome_4() {
+  const [isHoveredP, setisHoveredP] = useState(false);
+
   useEffect(() => {
     const openingMessage = document.querySelector(
       `.${styles.openingMessage}`
@@ -118,11 +144,13 @@ export default function BoxHome_3() {
     // if (mmenuMessage) {
     //   mmenuMessage.textContent = "Menu item one";
     // }
-    gsap.to(openingMessage, {
-      opacity: 0,
-      duration: 3,
-    });
-  }, []);
+    if (isHoveredP) {
+      gsap.to(openingMessage, {
+        opacity: 0,
+        duration: 3,
+      });
+    }
+  }, [isHoveredP]);
 
   return (
     <>
@@ -135,7 +163,11 @@ export default function BoxHome_3() {
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
 
-          <Torus position={[0, 0, 0]} />
+          <Torus
+            position={[0, 0, 0]}
+            isHoveredP={isHoveredP}
+            setisHoveredP={setisHoveredP}
+          />
 
           <Stars
             radius={100}

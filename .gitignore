@@ -39,5 +39,6 @@ next-env.d.ts
 *.blend
 *.blend1
 *.txt
+*.webp
 ScrollPage.tsx
 onPointerOverPage.tsx
