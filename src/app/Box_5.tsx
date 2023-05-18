@@ -33,7 +33,7 @@ function Torus(
   });
 
   function Sprite({}) {
-    const url = "/earth.jpg"
+    const url = "/SPrite_1.png"
     const texture = useLoader(THREE.TextureLoader, url);
     return (
       <sprite>
