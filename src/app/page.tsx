@@ -29,6 +29,9 @@ import gsap from "gsap";
 
 import BoxHome_5 from "./Box_5";
 
+import BoxHome_6 from "./Box_6";
+
+
 //import TorusPage from "./BBT";
 
 //import TorusPage from "./Bandy";
@@ -54,7 +57,7 @@ export default function Home() {
    
   return (
     <>
-      <BoxHome_5 />
+      <BoxHome_6 />
     </>
   );
 }

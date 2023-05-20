@@ -34,17 +34,94 @@ function Torus(
 
   // const mmenuMessageRef = useRef<HTMLDivElement>(null);
 
+  function Sprite({
+    angle,
+    menuItem,
+    spriteRefs,
+  }: {
+    angle: number;
+    menuItem: string;
+    spriteRefs: React.MutableRefObject<THREE.Sprite[]>;
+  }) {
+    const radius = 3.5;
+    const x = radius * Math.sin(angle);
+    const z = radius * Math.cos(angle);
+    let sin_rotater = 0.1;
+    const url = "/SPrite_1.png";
+    const texture = useLoader(THREE.TextureLoader, url);
+
+    const spriteRef = useRef<THREE.Sprite>() as MutableRefObject<THREE.Sprite>;
+
+    useEffect(() => {
+      spriteRefs.current.push(spriteRef.current);
+
+      // console.log(localHover);
+
+      return () => {
+        const spriteIndex = spriteRefs.current.indexOf(spriteRef.current);
+        if (spriteIndex !== -1) {
+          spriteRefs.current.splice(spriteIndex, 1);
+        }
+      };
+    }, []);
+
+    useFrame((state, delta) => {
+      sin_rotater += 0.01;
+      if (spriteRef.current) {
+        spriteRefs.current.forEach((sprite, index) => {
+          const radius = 5; // adjust the radius as needed
+          const angle =
+            sin_rotater + (index * (Math.PI * 2)) / spriteRefs.current.length;
+          const x = sprite.position.x;
+          const y = Math.cos(angle) * -radius; // Keep the initial y-position unchanged
+          const z = sprite.position.z; // Keep the initial z-position unchanged
+
+          sprite.position.x = x;
+          sprite.position.y = y;
+          sprite.position.z = z;
+          //sprite.rotation.x += 0.01; // Adjust the rotation speed as needed
+        });
+      } else {
+        spriteRefs.current.forEach((sprite) => {
+          // Reset the sprite positions
+          sprite.position.x = 0;
+          sprite.position.y = 0;
+          sprite.position.z = 0;
+        });
+      }
+    });
+
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+
+    // Set canvas dimensions
+    canvas.width = 200;
+    canvas.height = 40;
+
+    // Draw the menu item on the canvas
+    context!.font = "16px Arial";
+    context!.fillStyle = "white";
+    context!.fillText(menuItem, 10, 20);
+
+    {
+      /* <spriteMaterial map={new THREE.CanvasTexture(context!.canvas)} /> */
+    }
+
+    return (
+      <sprite position={[0, z, x]} ref={spriteRef}>
+        <spriteMaterial map={new THREE.CanvasTexture(context!.canvas)} />
+      </sprite>
+    );
+  }
+
   useFrame(() => {
     if (isHovered && meshRed.current) {
       meshRed.current.rotation.x += 0.01;
 
       props.setisHoveredP(true);
 
-      spriteRefs.current.forEach((sprite) => {
-        sprite.rotation.x += 0.01;
-        sprite.rotation.y += 0.01;
-      });
-      //console.log(props.isHoveredP);
+     
+     
     }
   });
 
@@ -70,11 +147,16 @@ function Torus(
   //
   //
 
-  const glb = useLoader(GLTFLoader, "/bandy-bandy-torus.glb");
+  
   const texture = new TextureLoader().load("/earth.jpg");
   texture.wrapS = texture.wrapT = RepeatWrapping;
   texture.repeat.set(1, 1);
 
+  
+
+  
+
+  
   return (
     <>
       <mesh
@@ -91,6 +173,17 @@ function Torus(
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial map={texture} />
       </mesh>
+
+      {menuItems.map((item, index) => (
+            <Sprite
+              key={index}
+              angle={index * 0.6}
+              menuItem={item}
+              spriteRefs={spriteRefs}
+              
+            />
+          ))}
+
       {/* {menuItems.map((item, index) => (
         <Sprite key={index} angle={index * 0.6} menuItem={item} />
       ))} */}
@@ -277,7 +370,7 @@ export default function BoxHome_5() {
             speed={1}
           />
           {/* <OrbitControls /> */}
-          {menuItems.map((item, index) => (
+          {/* {menuItems.map((item, index) => (
             <Sprite
               key={index}
               angle={index * 0.6}
@@ -285,7 +378,7 @@ export default function BoxHome_5() {
               spriteRefs={spriteRefs}
               
             />
-          ))}
+          ))} */}
           <OrbitControls />
         </Canvas>
       </div>
