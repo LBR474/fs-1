@@ -70,6 +70,7 @@ const Sprite = forwardRef<THREE.Sprite | null, SpriteProps>(
   );
 }
 )
+Sprite.displayName = "MyAnimatingTorus";
 
 
 export default Sprite
