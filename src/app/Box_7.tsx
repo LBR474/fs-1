@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars } from "@react-three/drei";
+import { OrbitControls, Scroll, ScrollControls, Stars } from "@react-three/drei";
 import styles from "./page.module.css";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -176,10 +176,31 @@ function Torus(
 //
 //
 
-export default function BoxHome_6() {
+export default function BoxHome_7() {
   const [isHoveredP, setisHoveredP] = useState(false);
 
-  const spriteRefs = useRef<THREE.Sprite[]>([]);
+  type ScrollControlsProps = {
+    /** Precision, default 0.00001 */
+    eps?: number;
+    /** Horizontal scroll, default false (vertical) */
+    horizontal?: boolean;
+    /** Infinite scroll, default false (experimental!) */
+    infinite?: boolean;
+    /** Defines the length of the scroll area, each page is height:100%, default 1 */
+    pages?: number;
+    /** A factor that increases scroll bar travel, default 1 */
+    distance?: number;
+    /** Friction in seconds, default: 0.2 (1/5 second) */
+    damping?: number;
+    /** maxSpeed optionally allows you to clamp the maximum speed. If damping is 0.2s and looks OK
+     *  going between, say, page 1 and 2, but not for pages far apart as it'll move very rapid,
+     *  then a maxSpeed of e.g. 0.1 which will clamp the speed to 0.1 units per second, it may now
+     *  take much longer than damping to reach the target if it is far away. Default: Infinity */
+    maxSpeed?: number;
+    enabled?: boolean;
+    style?: React.CSSProperties;
+    children: React.ReactNode;
+  };
 
   const menuItems = [
     "End poverty",
@@ -216,9 +237,20 @@ export default function BoxHome_6() {
         <div className={styles.openingMessage}>
           Mouse over Earth at the bottom of screen
         </div>
-        <Canvas >
+        <Canvas>
           <ambientLight />
           <pointLight position={[10, 10, 10]} />
+          <ScrollControls pages={3} damping={0.1}>
+            {/* Canvas contents in here will *not* scroll, but receive useScroll! */}
+           
+           
+            <Scroll html>
+              {/* DOM contents in here will scroll along */}
+              <h1>html in here (optional)</h1>
+              <h1 style={{ top: "100vh" }}>second page</h1>
+              <h1 style={{ top: "200vh" }}>third page</h1>
+            </Scroll>
+          </ScrollControls>
 
           <Torus
             position={[0, 0, 0]}
@@ -246,7 +278,7 @@ export default function BoxHome_6() {
               
             />
           ))} */}
-          <OrbitControls />
+          {/* <OrbitControls /> */}
         </Canvas>
       </div>
     </>

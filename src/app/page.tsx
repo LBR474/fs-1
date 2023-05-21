@@ -17,9 +17,6 @@ import {
 
 import gsap from "gsap";
 
-// import ScrollPage from "./ScrollPage";
-
-// import OnPointerOverPage from "./OnPointerOverPage";
 
 //import BoxHome from "./Box";
 
@@ -27,9 +24,12 @@ import gsap from "gsap";
 
 // import BoxHome_4 from "./Box_4";
 
-import BoxHome_5 from "./Box_5";
+//import BoxHome_5 from "./Box_5";
 
-import BoxHome_6 from "./Box_6";
+//import BoxHome_6 from "./Box_6";
+import BoxHome_7 from "./Box_7";
+import OnPointerOverPage from "./OnPointerOverPage";
+import ScrollPage from "./ScrollPage_1";
 
 
 //import TorusPage from "./BBT";
@@ -57,7 +57,9 @@ export default function Home() {
    
   return (
     <>
-      <BoxHome_6 />
+      {/* <BoxHome_7 /> */}
+      {/* <OnPointerOverPage /> */}
+      <ScrollPage />
     </>
   );
 }
