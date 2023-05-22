@@ -53,7 +53,7 @@ const MyAnimatingTorus: React.FC<Props> = ({ percentage }) => {
 
   const spriteRef = useRef<THREE.Sprite>() as MutableRefObject<THREE.Sprite>;
 
-  //const spriteRefs = useRef<(THREE.Sprite | null)[]>([]);
+  const spriteGroupRef = useRef<(THREE.Group | null)>(null!);
 
   const spriteRefs = React.useRef<Array<THREE.Sprite | null>>([]);
 
@@ -64,8 +64,9 @@ const MyAnimatingTorus: React.FC<Props> = ({ percentage }) => {
     const rotation = offset * Math.PI * 2;
 
     // Update the rotation of the torus
-    if (meshRef.current) {
-      meshRef.current.rotation.x = rotation;
+    if (meshRef.current && spriteGroupRef.current) {
+      meshRef.current.rotation.y = rotation;
+      spriteGroupRef.current.rotation.x = rotation;
     }
 
     
@@ -93,25 +94,29 @@ const MyAnimatingTorus: React.FC<Props> = ({ percentage }) => {
     <>
       {""}
       <group ref={meshRef}>
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <mesh rotation={[0, 0, 0]}>
           <sphereGeometry args={[1, 32, 32]} />
           <meshStandardMaterial map={texture} />
         </mesh>
-        {menuItems.map((item, index) => (
-          <group
+      </group>
+      <group
+          ref={spriteGroupRef} >
+      {menuItems.map((item, index) => (
+        <group
+          
+          key={index}
+          onClick={(e) => {
+            console.log(item);
+          }}
+        >
+          <Sprite
+            angle={index * 0.6}
+            menuItem={item}
             key={index}
-            onClick={(e) => {
-              console.log(item);
-            }}
-          >
-            <Sprite
-              angle={index * 0.6}
-              menuItem={item}
-              key={index}
-              ref={(sprite) => (spriteRefs.current[index] = sprite)}
-            />
-          </group>
-        ))}
+            ref={(sprite) => (spriteRefs.current[index] = sprite)}
+          />
+        </group>
+      ))}
       </group>
     </>
   );
