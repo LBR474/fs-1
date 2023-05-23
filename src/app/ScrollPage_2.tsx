@@ -65,7 +65,7 @@ const SpriteComponent: React.FC<SpriteProps> = ({ menuItems }) => {
     onClick?: () => void;
   }
 
-  const myHtmlRefs = menuItems.map(() => useRef<THREE.Sprite | null>(null!));
+  //const myHtmlRefs = menuItems.map(() => useRef<THREE.Sprite | null>(null!));
 
 
   const MyHtml = React.forwardRef(
@@ -96,7 +96,7 @@ const SpriteComponent: React.FC<SpriteProps> = ({ menuItems }) => {
           // rotation={[0, Math.PI / 1, 0]}
         >
           <MyHtml
-            ref={myHtmlRefs[index]}
+            //ref={myHtmlRefs[index]}
             angle={index * 36}
             onClick={() => console.log("Clicked")}
           >
