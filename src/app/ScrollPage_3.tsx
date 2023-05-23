@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 
 import { Canvas, useFrame } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 
 import * as THREE from "three";
 import { RepeatWrapping, TextureLoader } from "three";
@@ -16,13 +16,15 @@ import React from "react";
 import gsap from "gsap";
 
 type Props = {
-  percentage: number;
+ percentage: number;
+  currentMenuItemIndex: number;
+  setContent: React.Dispatch<React.SetStateAction<string>>;
 };
+  
 
-const MyAnimatingTorus: React.FC<Props> = ({}) => {
+
+const MyAnimatingTorus: React.FC<Props> = ({ setContent }) => {
   const [currentMenuItemIndex, setCurrentMenuItemIndex] = useState(0);
-
-  const meshRef = useRef<THREE.Group>(null);
 
   const data = useScroll();
 
@@ -39,11 +41,8 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
 
     // Update the rotation of the torus
     if (spriteGroupRef.current) {
-      
       if (offset <= offset_step) {
         rotation = rotate_step;
-
-       
       } else if (offset > offset_step && offset <= offset_step * 2) {
         rotation = rotate_step * 2;
         gsap.to(spriteGroupRef.current.rotation, {
@@ -102,7 +101,6 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
         spriteGroupRef.current.rotation.x = rotation;
       }
     }
-   
   });
 
   const menuItems = [
@@ -125,14 +123,14 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
   return (
     <>
       {""}
-     
-     
+
       <group ref={spriteGroupRef}>
         {menuItems.map((item, index) => (
           <group
             key={index}
             onClick={() => {
               setCurrentMenuItemIndex(index);
+              setContent(item);
               console.log(currentMenuItemIndex);
               console.log(item);
             }}
@@ -151,15 +149,10 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
 };
 
 export default function HomeSP() {
+  const [content, setContent] = useState("Online Government");
  
 
-  useEffect(() => {
-    const floatRightDiv = document.querySelector("#floatRight");
-    if (floatRightDiv) {
-      floatRightDiv.innerHTML = "New content"; // Replace "New content" with the desired new content
-    }
-  }, []);
-
+  
   return (
     <>
       <div className={styles.container}>
@@ -186,7 +179,7 @@ export default function HomeSP() {
               <Scroll>
                 {/* Canvas contents in here will scroll along */}
 
-                <MyAnimatingTorus percentage={0} />
+                <MyAnimatingTorus percentage={0} setContent={setContent} currentMenuItemIndex={0} />
               </Scroll>
             </ScrollControls>
 
@@ -194,12 +187,9 @@ export default function HomeSP() {
           </Canvas>
         </div>
         <div className={styles.floatRight} id="floatRight">
-          <h1>Online Government</h1>
+          <h1>{content}</h1>
           <h3>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
-            mollitia, a expedita neque distinctio natus cupiditate, porro eius
-            nostrum voluptatem accusantium ad aliquid autem commodi ex quis
-            assumenda magni minima.
+            The content for {content} will appear here.
           </h3>
         </div>
       </div>

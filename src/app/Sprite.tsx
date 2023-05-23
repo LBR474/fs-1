@@ -3,7 +3,7 @@ import React, { forwardRef } from 'react'
 import * as THREE from "three";
 import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls, Stars } from "@react-three/drei";
+import { Html, OrbitControls, Stars } from "@react-three/drei";
 import styles from "./page.module.css";
 import { useLoader } from "@react-three/fiber";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
@@ -20,7 +20,7 @@ type SpriteProps = {
 
 const Sprite = forwardRef<THREE.Sprite | null, SpriteProps>(
   ({ angle, menuItem }, ref) => {
-  const radius = 3.5;
+  const radius = 2.5;
   const x = radius * Math.sin(angle);
   const z = radius * Math.cos(angle);
   let sin_rotater = 0.1;
@@ -51,21 +51,30 @@ const Sprite = forwardRef<THREE.Sprite | null, SpriteProps>(
   const canvas = document.createElement("canvas");
   const context = canvas.getContext("2d");
 
-  // Set canvas dimensions
-  canvas.width = 200;
-  canvas.height = 40;
+  const dpr = window.devicePixelRatio || 1;
+  const canvasWidth = 200 * dpr;
+  const canvasHeight = 60 * dpr;
+
+  
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+
+  
+  context!.scale(dpr, dpr);
 
   // Draw the menu item on the canvas
-  context!.font = "16px Arial";
+  const fontSize = 8 * dpr;
+  context!.font = `${fontSize}px Arial`;
   context!.fillStyle = "white";
-  context!.fillText(menuItem, 10, 20);
+  context!.fillText(menuItem, 10 * dpr, 20 * dpr);
 
   
   return (
-    <sprite position={[0, z, x]} ref={spriteRef} 
-    
-    >
+    <sprite position={[0, z, x]} ref={spriteRef}>
       <spriteMaterial map={new THREE.CanvasTexture(context!.canvas)} />
+      {/* <Html position={[0, 0, 0]}>
+        <h1 style={{ color: "white" }}>{menuItem}</h1>
+      </Html> */}
     </sprite>
   );
 }

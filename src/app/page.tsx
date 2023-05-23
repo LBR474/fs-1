@@ -29,7 +29,7 @@ import gsap from "gsap";
 //import BoxHome_6 from "./Box_6";
 //import BoxHome_7 from "./Box_7";
 //import OnPointerOverPage from "./OnPointerOverPage";
-import ScrollPage from "./ScrollPage_1";
+import ScrollPage from "./ScrollPage_3";
 
 
 //import TorusPage from "./BBT";
