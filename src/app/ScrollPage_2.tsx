@@ -84,6 +84,7 @@ const SpriteComponent: React.FC<SpriteProps> = ({ menuItems }) => {
       );
     }
   );
+  MyHtml.displayName = "MyHtml";
 
 
 
