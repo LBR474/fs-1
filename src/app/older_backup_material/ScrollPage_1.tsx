@@ -39,11 +39,8 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
 
     // Update the rotation of the torus
     if (spriteGroupRef.current) {
-      
       if (offset <= offset_step) {
         rotation = rotate_step;
-
-       
       } else if (offset > offset_step && offset <= offset_step * 2) {
         rotation = rotate_step * 2;
         gsap.to(spriteGroupRef.current.rotation, {
@@ -102,7 +99,6 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
         spriteGroupRef.current.rotation.x = rotation;
       }
     }
-   
   });
 
   const menuItems = [
@@ -125,8 +121,7 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
   return (
     <>
       {""}
-     
-     
+
       <group ref={spriteGroupRef}>
         {menuItems.map((item, index) => (
           <group
@@ -151,8 +146,6 @@ const MyAnimatingTorus: React.FC<Props> = ({}) => {
 };
 
 export default function HomeSP() {
- 
-
   useEffect(() => {
     const floatRightDiv = document.querySelector("#floatRight");
     if (floatRightDiv) {

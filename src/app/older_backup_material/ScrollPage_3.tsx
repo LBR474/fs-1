@@ -16,12 +16,11 @@ import React from "react";
 import gsap from "gsap";
 
 type Props = {
- percentage: number;
+  percentage: number;
   currentMenuItemIndex: number;
   setContent: React.Dispatch<React.SetStateAction<string>>;
+  width: number;
 };
-  
-
 
 const MyAnimatingTorus: React.FC<Props> = ({ setContent }) => {
   const [currentMenuItemIndex, setCurrentMenuItemIndex] = useState(0);
@@ -150,9 +149,7 @@ const MyAnimatingTorus: React.FC<Props> = ({ setContent }) => {
 
 export default function HomeSP() {
   const [content, setContent] = useState("Online Government");
- 
 
-  
   return (
     <>
       <div className={styles.container}>
@@ -179,7 +176,12 @@ export default function HomeSP() {
               <Scroll>
                 {/* Canvas contents in here will scroll along */}
 
-                <MyAnimatingTorus percentage={0} setContent={setContent} currentMenuItemIndex={0} />
+                <MyAnimatingTorus
+                  percentage={0}
+                  setContent={setContent}
+                  currentMenuItemIndex={0}
+                  width={500}
+                />
               </Scroll>
             </ScrollControls>
 
@@ -188,9 +190,7 @@ export default function HomeSP() {
         </div>
         <div className={styles.floatRight} id="floatRight">
           <h1>{content}</h1>
-          <h3>
-            The content for {content} will appear here.
-          </h3>
+          <h3>The content for {content} will appear here.</h3>
         </div>
       </div>
     </>
