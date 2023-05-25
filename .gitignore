@@ -43,4 +43,5 @@ next-env.d.ts
 ScrollPage.tsx
 onPointerOverPage.tsx
 BBT.tsx
-/older_backup__material/*
+Bandy.tsx
+/older_backup__material/
