@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+import Image from "next/image";
+
 import {
   OrbitControls,
   Scroll,
@@ -11,24 +13,34 @@ import {
   useScroll,
 } from "@react-three/drei";
 import styles from "./page.module.css";
+import { setSyntheticTrailingComments } from "typescript";
 
 type TextScrollerProps = {
   menuItems: string[];
   color?: string;
   startRotation?: boolean;
+  laterUseRef?: React.RefObject<HTMLDivElement>;
+  laterUseRefText?: React.RefObject<HTMLElement>;
+  laterUseImgLablRef?: React.RefObject<HTMLParagraphElement>;
 };
 
 const TextScroller: React.FC<TextScrollerProps> = ({
   menuItems,
   color = "white",
   startRotation,
+  laterUseRef,
+  laterUseRefText,
+  laterUseImgLablRef
 }) => {
   const groupRef = useRef<THREE.Group | null>(null);
+  const containerRef = useRef<THREE.Group | null>(null);
   const [frameCount, setFrameCount] = useState(0);
+
+  const [displayText, setDisplayText] = useState("");
 
   useFrame(({ camera }) => {
     if (startRotation) {
-      setFrameCount((prevFrameCount) => prevFrameCount + 0.001);
+      setFrameCount((prevFrameCount) => prevFrameCount + 0.01);
     } else {
       setFrameCount(frameCount);
     }
@@ -45,17 +57,31 @@ const TextScroller: React.FC<TextScrollerProps> = ({
 
     groupRef.current!.children.forEach((text, index) => {
       const mesh = text as THREE.Mesh; // Cast text to Mesh
+      
       const material = mesh.material as THREE.MeshBasicMaterial; // Cast material to MeshBasicMaterial
       let angle = frameCount + index * angleIncrement;
+
+      
 
       text.position.x = Math.cos(angle) * circleRadius; // Adjust x position based on angle
       text.position.y = Math.sin(angle) * circleRadius; // Adjust y position based on angle
       text.position.z = (Math.cos(angle) * -circleRadius) / 4;
 
-      if (text.position.z > 0.45) {
+      if (text.position.z > 0.45 && text.position.y < 0.2 && text.position.y > -0.1) {
         if (material.color) {
           material.color.set("green");
           material.needsUpdate = true;
+          console.log(laterUseRef)
+           laterUseRef!.current!.textContent = menuItems[index].toString(); 
+            laterUseImgLablRef!.current!.textContent = 'Image label for ' +
+             menuItems[index].toString();
+
+           (laterUseRefText!.current!.textContent =
+             menuItems[index] +
+             " and some more text for " +
+             menuItems[index].toString())
+
+            
         }
       } else {
          material.color.set("white");
@@ -116,33 +142,10 @@ TextScroller.displayName = "TextScroller";
 export default function HomeSP() {
   const [SR, setSR] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-
-  const COLOR_CHANGE_BREAKPOINT_IN_PX = 800;
-  const LIGHT_COLOR = "#dfdfdf";
-  const DARK_COLOR = "#424241";
-
-  const [backgroundColor, setBackgroundColor] = useState(LIGHT_COLOR);
-
-  useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth > COLOR_CHANGE_BREAKPOINT_IN_PX) {
-        setBackgroundColor(LIGHT_COLOR);
-      } else {
-        setBackgroundColor(DARK_COLOR);
-      }
-    };
-
-    window.addEventListener("resize", onResize);
-  }, []);
-
-  // set the correct color by default
-  useEffect(() => {
-    if (window.innerWidth > COLOR_CHANGE_BREAKPOINT_IN_PX) {
-      setBackgroundColor(LIGHT_COLOR);
-    } else {
-      setBackgroundColor(DARK_COLOR);
-    }
-  }, []);
+  const rightDivRef = useRef<HTMLDivElement>(null);
+  const rightDivRefHeading = useRef<HTMLHeadingElement>(null);
+  const rightDivRefText = useRef<HTMLHeadingElement>(null);
+  const imageLabelRef = useRef<HTMLParagraphElement>(null);
 
   const menuItems = [
     "End poverty",
@@ -156,6 +159,28 @@ export default function HomeSP() {
     "Free healthcare",
     "No more jobs",
   ];
+
+  type myImageProps = {
+    label: string;
+    labelRef: React.RefObject<HTMLParagraphElement>;
+  };
+
+  const MyImageComponent = ({label, labelRef }:myImageProps) => {
+    return (
+      <div className={styles["image-container"]}>
+        <Image
+          src="/earth.jpg" // Replace with the actual image path
+          alt="Description of the image"
+          width={200}
+          height={200}
+          className={styles["custom-image"]}
+        />
+        <p ref={labelRef}  className={styles["image-label"]}>
+          {label}
+        </p>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -172,36 +197,37 @@ export default function HomeSP() {
           />
         </Canvas>
         <div className={styles.floatLeft}>
-          <Canvas
-            onPointerOver={(e) => {
-              console.log(e);
-              setSR(true);
-              console.log(SR);
-            }}
-            onPointerOut={(e) => {
-              console.log(e);
-              setSR(false);
-              console.log(SR);
-            }}
-          >
+          <Canvas>
             <directionalLight color="white" position={[0, 10, 15]} />
-
+            <mesh
+              onPointerOver={(e) => {
+                setSR(true);
+              }}
+              onPointerOut={(e) => {
+                console.log(e);
+                setSR(false);
+                console.log(SR);
+              }}
+            >
+              <boxGeometry />
+              <meshStandardMaterial />
+            </mesh>
             <TextScroller
               menuItems={menuItems}
               color="white"
               startRotation={SR}
+              laterUseRef={rightDivRefHeading}
+              laterUseRefText={rightDivRefText}
+              laterUseImgLablRef={imageLabelRef}
             />
             <OrbitControls />
           </Canvas>
         </div>
-        <div className={styles.floatRight}>
-          <h1>Online Government</h1>
-          <h3>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam
-            mollitia, a expedita neque distinctio natus cupiditate, porro eius
-            nostrum voluptatem accusantium ad aliquid autem commodi ex quis
-            assum
-          </h3>
+        <div className={styles.floatRight} ref={rightDivRef}>
+          <h1 ref={rightDivRefHeading}></h1>
+          <h3 ref={rightDivRefText}></h3>
+
+          <MyImageComponent label="Image label" labelRef={imageLabelRef} />
         </div>
       </div>
     </>
