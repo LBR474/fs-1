@@ -90,6 +90,7 @@ const TextScroller: React.FC<TextScrollerProps> = ({
   //
   //
   //
+  //
 
   return (
     <group ref={groupRef}>
