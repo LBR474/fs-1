@@ -220,7 +220,7 @@ export default function HomeSP() {
               laterUseRefText={rightDivRefText}
               laterUseImgLablRef={imageLabelRef}
             />
-            <OrbitControls />
+            {/* <OrbitControls /> */}
           </Canvas>
         </div>
         <div className={styles.floatRight} ref={rightDivRef}>
