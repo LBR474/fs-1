@@ -42,4 +42,5 @@ next-env.d.ts
 *.webp
 ScrollPage.tsx
 onPointerOverPage.tsx
+BBT.tsx
 older_backup__material/
