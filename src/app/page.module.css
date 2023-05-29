@@ -1,6 +1,5 @@
 
 
-
 .container {
   position: absolute;
   top: 0px;
@@ -12,6 +11,13 @@
   /* border: 2px solid rgb(255, 213, 0); */
 
  
+}
+
+.header {
+  background-color: #9933cc;
+  color: #ffffff;
+  padding: 15px;
+  text-align: center;
 }
 
 .floatLeft {
@@ -28,11 +34,6 @@
   align-items: left;
 }
 
-/* .floatLeft Canvas {
-  border: 2px solid rgb(0, 229, 255);
-  width: 50%;
-} */
-
 .floatRight {
   position: absolute;
   top: 0;
@@ -48,56 +49,3 @@
 }
 
 
-.floatRightImg {
-  
-  height: 20vh;
-  width: 20vw;
-  
-}
-.mmenuMessage_1 {
-  position: fixed;
-  top: 0%;
-  left: 0%;
-  height: 100%;
-  width: 40%;
-  color: white;
-  /* border: 2px solid rgb(8, 0, 255); */
-  opacity: 1;
-  padding: 2%;
-  text-align: center;
-  font-size: xx-large;
-  margin: auto; /* Add this line */
-  opacity: 1;
-  /* background-color: aqua; */
-}
-.openingMessage {
-  position: fixed;
-  top: 30%;
-  /* left: 5%; */
-  height: fit-content;
-  width: fit-content;
-  color: white;
-  border: 2px solid rgb(8, 0, 255);
-  opacity: 1;
-  padding: 2%;
-  text-align: center;
-  font-size: xx-large;
-  margin: auto; /* Add this line */
-  opacity: 1;
-}
-
-.subDiv {
-  position: fixed;
-  top: 50%;
-  height: 10vh;
-  width: 40%;
-  color: white;
-  border: 2px solid rgb(8, 0, 255);
-  
-  padding: 2%;
-  text-align: center;
-  font-size: xx-large;
-  margin: auto; /* Add this line */
-  opacity: 1;
-  background-color: rgb(234, 0, 255);
-}

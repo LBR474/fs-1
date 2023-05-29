@@ -1,0 +1,183 @@
+
+
+
+
+@media screen and (max-width: 580px) {
+  .container {
+    height: 675px;
+  }
+  .topCorner {
+    width: 100%;
+  }
+  .floatLeft {
+    height: 675px;
+  }
+  .floatRight {
+    height: 675px;
+  }
+  .floatLeftInner {
+    
+    width: 100%;
+    height: 100%;
+  }
+}
+@media screen and (min-width: 581px) {
+  .topCorner {
+    width: 50%;
+  }
+  .floatLeft{
+    height: 100%
+  }
+  .floatLeftInner {
+    height: 100%;
+  }
+  .floatRight{
+    height: 100%
+  }
+}
+
+.actions {
+	position: absolute;
+	bottom: 25px;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+
+.cards {
+	position: absolute;
+	width: 14rem;
+	height: 18rem;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.cards li {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	width: 14rem;
+	height: 4rem;
+	text-align: center;
+  vertical-align: middle;
+	line-height: 2rem;
+	font-size: 2rem;
+	font-family: sans-serif;
+	background-color: #010101;
+  color: white;
+	position: absolute;
+	top: 9;
+	left: 0;
+	border-radius: 0.8rem;
+}
+
+
+
+.container {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  /* height: 100%; */
+  width: 100%;
+
+  background-color: black;
+  /* border: 2px solid rgb(255, 213, 0); */
+
+ 
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  background-color: white;
+  color: #000000;
+  margin: 0px;
+  text-align: center;
+  height: fit-content;
+  width: 100%;
+}
+
+.image-container {
+  /* Add your desired styles for the image container here */
+  border: 2px rgb(208, 0, 255) solid;
+  background-color: transparent;
+}
+.custom-image {
+  /* Add your desired styles for the image container here */
+  border: 2px rgb(208, 0, 255) solid;
+ }
+
+.floatLeft {
+ position: fixed;
+  top: 10%;
+  float: left;
+  width: 50%;
+  /* height: 50%; */
+  
+
+  background-color: transparent;
+  border: 2px solid rgb(0, 251, 255);
+
+  /* display: flex; */
+  align-items: left;
+  
+}
+.floatLeftInner {
+  width: 100%;
+  background-color: transparent;
+  border: 2px solid rgb(242, 0, 255);
+
+  /* display: flex; */
+  align-items: left;
+  
+}
+.gallery {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+  background: #020202;
+}
+
+
+
+.floatRight {
+  position: fixed;
+  top: 10%;
+  right: 0%;
+  border: 2px red solid;
+  width: 50%;
+  
+  background-color: transparent;
+  color: white
+   /*
+  background-image: url("/Menu_screen_shot.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%; */
+}
+
+.textContainer {
+  position: absolute;
+  bottom: 0%;
+  width: 100%;
+  height: 25%;
+  z-index: 4;
+  color: aqua;
+  border: 2px rgb(0, 208, 255) solid;
+  background-color: #000000;
+}
+
+.topCorner {
+  border: 2px solid red;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 10%;
+  /* //width: 20%; */
+  background-color: transparent;
+  z-index: 1;
+}
+
+

@@ -185,6 +185,9 @@ export default function HomeSP() {
   return (
     <>
       <div className={styles.container} ref={containerRef}>
+        <div className={styles.header}>
+          <h1>coryarmbrecht.com</h1>
+        </div>
         <Canvas id="mainCanvas">
           <Stars
             radius={100}
@@ -197,39 +200,41 @@ export default function HomeSP() {
           />
         </Canvas>
         <div className={styles.floatLeft}>
-          <Canvas>
-            <directionalLight color="white" position={[0, 10, 15]} />
-            <mesh
-              onPointerOver={(e) => {
-                setSR(true);
-              }}
-              onPointerOut={(e) => {
-                console.log(e);
-                setSR(false);
-                console.log(SR);
-              }}
-            >
-              <boxGeometry />
-              <meshStandardMaterial />
-            </mesh>
-            <TextScroller
-              menuItems={menuItems}
-              color="white"
-              startRotation={SR}
-              laterUseRef={rightDivRefHeading}
-              laterUseRefText={rightDivRefText}
-              laterUseImgLablRef={imageLabelRef}
-            />
-            {/* <OrbitControls /> */}
-          </Canvas>
-        </div>
-        <div className={styles.floatRight} ref={rightDivRef}>
-          <h1 ref={rightDivRefHeading}></h1>
-          <h3 ref={rightDivRefText}></h3>
+        
+            <Canvas>
+              <directionalLight color="white" position={[0, 10, 15]} />
+              <mesh
+                onPointerOver={(e) => {
+                  setSR(true);
+                }}
+                onPointerOut={(e) => {
+                  console.log(e);
+                  setSR(false);
+                  console.log(SR);
+                }}
+              >
+                <boxGeometry />
+                <meshStandardMaterial />
+              </mesh>
+              <TextScroller
+                menuItems={menuItems}
+                color="white"
+                startRotation={SR}
+                laterUseRef={rightDivRefHeading}
+                laterUseRefText={rightDivRefText}
+                laterUseImgLablRef={imageLabelRef}
+              />
+              {/* <OrbitControls /> */}
+            </Canvas>
+          </div>
+          <div className={styles.floatRight} ref={rightDivRef}>
+            <h1 ref={rightDivRefHeading}></h1>
+            <h3 ref={rightDivRefText}></h3>
 
-          <MyImageComponent label="Image label" labelRef={imageLabelRef} />
+            <MyImageComponent label="Image label" labelRef={imageLabelRef} />
+          </div>
         </div>
-      </div>
+      
     </>
   );
 }
