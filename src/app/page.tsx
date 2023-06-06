@@ -1,21 +1,7 @@
 "use client";
-import styles from "./page.module.css";
 
-import { Canvas, useFrame } from "@react-three/fiber";
-import { forwardRef, RefObject, useEffect, useRef, useState } from "react";
+//import "./style.css";
 
-import * as THREE from "three";
-import { Mesh, Object3D, RepeatWrapping, TextureLoader, Vector3 } from "three";
-
-import {
-  OrbitControls,
-  Scroll,
-  ScrollControls,
-  Stars,
-  useScroll,
-} from "@react-three/drei";
-
-import gsap from "gsap";
 
 
 //import BoxHome from "./Box";
@@ -29,7 +15,8 @@ import gsap from "gsap";
 //import BoxHome_6 from "./Box_6";
 //import BoxHome_7 from "./Box_7";
 //import OnPointerOverPage from "./OnPointerOverPage";
-import ScrollPage from "./ScrollPage_7";
+// import YourPage from "./ScrollPage_9";
+import ScrollPage from "./ScrollPage_9";
 
 
 //import TorusPage from "./BBT";
