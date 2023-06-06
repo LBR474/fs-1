@@ -33,8 +33,14 @@ const YourPage = () => {
     "No more jobs",
   ];
 
+  // const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
+  //   menuItems.map(() => useRef<Object3D | null>(null))
+  // );
+
   const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
-    menuItems.map(() => useRef<Object3D | null>(null))
+    Array.from({ length: menuItems.length }, () =>
+      useRef<Object3D | null>(null)
+    )
   );
 
   useEffect(() => {
