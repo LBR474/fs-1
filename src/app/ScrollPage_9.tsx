@@ -37,11 +37,16 @@ const YourPage = () => {
   //   menuItems.map(() => useRef<Object3D | null>(null))
   // );
 
-  const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
-    Array.from({ length: menuItems.length }, () =>
-      useRef<Object3D | null>(null)
-    )
-  );
+  // const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
+  //   Array.from({ length: menuItems.length }, () =>
+  //     useRef<Object3D | null>(null)
+  //   )
+  // );
+  const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
+
+  for (let i = 0; i < menuItems.length; i++) {
+    textRefs.current.push(useRef<Object3D | null>(null));
+  }
 
   useEffect(() => {
     // Register ScrollTrigger plugin
