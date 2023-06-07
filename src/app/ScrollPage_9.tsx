@@ -30,7 +30,7 @@ const ScrollPage = () => {
     // "No more jobs",
   ];
 
- const textPositions = useRef<number[]>([]);
+  const textPositions = useRef<number[]>([]);
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -79,6 +79,17 @@ const ScrollPage = () => {
     };
   }, [scrollY]);
 
+  const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
+
+  useEffect(() => {
+    const textureLoader = new TextureLoader();
+    textureLoader.load("/earth.jpg", (loadedTexture) => {
+      loadedTexture.wrapS = THREE.RepeatWrapping;
+      loadedTexture.wrapT = THREE.RepeatWrapping;
+      setTexture(loadedTexture);
+    });
+  }, []);
+
   return (
     <>
       <div className={styles.CanvasContainer}>
@@ -100,8 +111,8 @@ const ScrollPage = () => {
 
           <mesh position={[0, 0, 0]}>
             <sphereGeometry />
-            <meshStandardMaterial 
-            // map={texture} 
+            <meshStandardMaterial
+            map={texture}
             />
           </mesh>
           {menuItems.map((item, index) => (
