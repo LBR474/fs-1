@@ -4,7 +4,7 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Stars, Text } from "@react-three/drei";
-import { TextureLoader } from "three";
+import { Object3D, TextureLoader } from "three";
 
 import * as THREE from "three";
 
@@ -20,14 +20,14 @@ const ScrollPage = () => {
   const menuItems = [
     "End poverty",
     "Clean, abundant water",
-    // "Online government",
-    // "Direct your taxes",
-    // "Disclosure",
-    // "Focus on peace",
-    // "End the war on drugs",
-    // "Free education",
-    // "Free healthcare",
-    // "No more jobs",
+    "Online government",
+    "Direct your taxes",
+    "Disclosure",
+    "Focus on peace",
+    "End the war on drugs",
+    "Free education",
+    "Free healthcare",
+    "No more jobs",
   ];
 
   const textPositions = useRef<number[]>([]);
@@ -41,6 +41,14 @@ const ScrollPage = () => {
       autoKillThreshold: 0.01,
     });
 
+    textPositions.current = new Array(menuItems.length).fill(0);
+
+    const positions = [...textPositions.current];
+
+    menuItems.forEach((_, index) => {
+      positions[index] = -index;
+    });
+
     // Set up the ScrollTrigger
     ScrollTrigger.create({
       trigger: containerRef.current,
@@ -48,17 +56,16 @@ const ScrollPage = () => {
       end: "top top+=200",
       onEnter: () => {
         const updateTextPositions = () => {
-          const positions = textPositions.current;
+           const positions = [...textPositions.current];
 
-          if (scrollY >= 0 && scrollY <= 100) {
-            positions[0] = scrollY / 100;
-            setFillOpacNumber(1);
-          } else if (scrollY >= 100 && scrollY <= 200) {
-            positions[1] = scrollY / 100;
-          }
+           const positionOffset = scrollY / 100; // Adjust the scrollY value as needed
 
-          // Update the text positions
-          textPositions.current = positions;
+           menuItems.forEach((_, index) => {
+             positions[index] = positionOffset - index;
+           });
+
+           // Update the text positions
+           textPositions.current = positions;
         };
 
         updateTextPositions();
@@ -77,7 +84,7 @@ const ScrollPage = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY]);
+  }, [scrollY, menuItems]);
 
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
 
@@ -111,9 +118,7 @@ const ScrollPage = () => {
 
           <mesh position={[0, 0, 0]}>
             <sphereGeometry />
-            <meshStandardMaterial
-            map={texture}
-            />
+            <meshStandardMaterial map={texture} />
           </mesh>
           {menuItems.map((item, index) => (
             <Text
@@ -124,9 +129,9 @@ const ScrollPage = () => {
               fontSize={0.5}
               color="white"
               maxWidth={10}
-              position={[0, 2, textPositions.current[index] || 0]}
+              position={[0, 2, textPositions.current[index]]}
               scale={[0.1, 0.1, 0.1]}
-              fillOpacity={fillOpacNumber}
+              fillOpacity={1}
             >
               {item}
             </Text>
