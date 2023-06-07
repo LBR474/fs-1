@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
@@ -11,7 +11,7 @@ import * as THREE from "three";
 const ScrollPage = () => {
   const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
-  const [fillOpacNumber, setFillOpacNumber] = useState(0);
+  const [fillOpacNumber, setFillOpacNumber] = useState(1);
 
   // const texture = useLoader(TextureLoader, "/earth.jpg");
   // texture.wrapS = THREE.RepeatWrapping;
@@ -31,8 +31,10 @@ const ScrollPage = () => {
   ];
 
   const textPositions = useRef<number[]>([]);
+  const textYPositions = useRef<number[]>([]);
 
   useEffect(() => {
+    setFillOpacNumber(1);
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
@@ -42,30 +44,37 @@ const ScrollPage = () => {
     });
 
     textPositions.current = new Array(menuItems.length).fill(0);
-
-    const positions = [...textPositions.current];
-
-    menuItems.forEach((_, index) => {
-      positions[index] = -index;
-    });
+    textYPositions.current = new Array(menuItems.length).fill(0);
 
     // Set up the ScrollTrigger
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top+=100",
-      end: "top top+=200",
+     // end: "top top+=200",
       onEnter: () => {
         const updateTextPositions = () => {
-           const positions = [...textPositions.current];
+          
+          
+          const positions = [...textPositions.current];
+          const Ypositions = [...textYPositions.current];
 
-           const positionOffset = scrollY / 100; // Adjust the scrollY value as needed
+          const positionOffset = scrollY / 100; // Adjust the scrollY value as needed
 
-           menuItems.forEach((_, index) => {
-             positions[index] = positionOffset - index;
-           });
+          menuItems.forEach((_, index) => {
+            const localMI = (menuItems[index] as unknown as THREE.Mesh)
+            if (index == 0) {
+              console.log(localMI)
+            }
+            localMI
+            positions[index] =  (positionOffset - index);
+            Ypositions[index] = Math.cos(positionOffset - index) + 1;
+            
+          });
 
-           // Update the text positions
-           textPositions.current = positions;
+          // Update the text positions
+          textPositions.current = positions;
+          textYPositions.current = Ypositions;
+          console.log('Z positions: ', positions, "Y positions: ", Ypositions)
         };
 
         updateTextPositions();
@@ -85,6 +94,19 @@ const ScrollPage = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [scrollY, menuItems]);
+
+  // useLayoutEffect(() => {
+  //   const positions = [...textPositions.current];
+
+  //   menuItems.forEach((_, index) => {
+  //     positions[index] = -index * 2; // Adjust the multiplier as needed
+  //   });
+
+  //   // Update the text positions
+  //   textPositions.current = positions;
+
+  //   console.log("Layout effect has")
+  // }, []); // Empty dependencies array to run once on mount
 
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
 
@@ -116,7 +138,7 @@ const ScrollPage = () => {
             speed={1}
           />
 
-          <mesh position={[0, 0, 0]}>
+          <mesh position={[0, 1, 0]}>
             <sphereGeometry />
             <meshStandardMaterial map={texture} />
           </mesh>
@@ -129,7 +151,12 @@ const ScrollPage = () => {
               fontSize={0.5}
               color="white"
               maxWidth={10}
-              position={[0, 2, textPositions.current[index]]}
+              position={[
+                0,
+
+                textYPositions.current[index],
+                textPositions.current[index],
+              ]}
               scale={[0.1, 0.1, 0.1]}
               fillOpacity={1}
             >
