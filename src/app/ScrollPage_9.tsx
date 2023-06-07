@@ -33,18 +33,7 @@ const ScrollPage = () => {
     // "No more jobs",
   ];
 
-  // const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
-  //   menuItems.map(() => useRef<Object3D | null>(null))
-  // );
-
-  // const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
-  //   Array.from({ length: menuItems.length }, () =>
-  //     useRef<Object3D | null>(null)
-  //   )
-  // );
-
-  // textRefs.current[0] = useRef<Object3D | null>(null!);
-  // textRefs.current[1] = useRef<Object3D | null>(null!);
+ 
 
   const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
   for (let i = 0; i < menuItems.length; i++) {
@@ -150,25 +139,7 @@ const ScrollPage = () => {
       </div>
 
       <div className={styles.container} ref={containerRef}>
-        <div
-          ref={(el) => (bandedDivsRef.current[0] = el)}
-          className={styles["banded-div"]}
-        >
-          Div 1
-        </div>
-        <div
-          ref={(el) => (bandedDivsRef.current[1] = el)}
-          className={styles["banded-div"]}
-        >
-          Div 2
-        </div>
-        <div
-          ref={(el) => (bandedDivsRef.current[2] = el)}
-          className={styles["banded-div"]}
-        >
-          Div 3
-        </div>
-        {/* ... and so on */}
+       
         {/* Display window.scrollY */}
         <div className={styles.scrollY}>{scrollY}</div>
       </div>
