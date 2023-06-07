@@ -44,9 +44,12 @@ const YourPage = () => {
   // );
   const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
 
-  for (let i = 0; i < menuItems.length; i++) {
-    textRefs.current.push(useRef<Object3D | null>(null));
-  }
+  textRefs.current[0] = useRef<Object3D | null>(null);
+  textRefs.current[1] = useRef<Object3D | null>(null);
+
+  // for (let i = 0; i < menuItems.length; i++) {
+  //   textRefs.current.push(useRef<Object3D | null>(null));
+  // }
 
   useEffect(() => {
     // Register ScrollTrigger plugin
