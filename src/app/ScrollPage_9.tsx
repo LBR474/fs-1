@@ -8,7 +8,7 @@ import { Object3D, TextureLoader } from "three";
 
 import * as THREE from "three";
 
-const YourPage = () => {
+const ScrollPage = () => {
   const containerRef = useRef(null);
   const bandedDivsRef = useRef<Array<HTMLDivElement | null>>(
     Array(10).fill(null)
@@ -194,4 +194,4 @@ const YourPage = () => {
   );
 };
 
-export default YourPage;
+export default ScrollPage;
