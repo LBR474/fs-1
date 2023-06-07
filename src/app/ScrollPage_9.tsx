@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
@@ -61,13 +61,17 @@ const ScrollPage = () => {
           const positionOffset = scrollY / 100; // Adjust the scrollY value as needed
 
           menuItems.forEach((_, index) => {
-            const localMI = (menuItems[index] as unknown as THREE.Mesh)
-            if (index == 0) {
-              console.log(localMI)
+            const textRef = textRefs.current[index];
+            if (textRef && index == 0) {
+              const boundingBox = new THREE.Box3().setFromObject(textRef);
+              // positions[index] = boundingBox.min.z;
+              // Ypositions[index] = Math.cos(positionOffset - index) + 1;
+              console.log('TextRef position', textRef.position)
             }
-            localMI
-            positions[index] =  (positionOffset - index);
-            Ypositions[index] = Math.cos(positionOffset - index) + 1;
+           
+            
+             positions[index] =  (positionOffset - index);
+             Ypositions[index] = Math.cos(positionOffset - index) + 1;
             
           });
 
@@ -95,18 +99,7 @@ const ScrollPage = () => {
     };
   }, [scrollY, menuItems]);
 
-  // useLayoutEffect(() => {
-  //   const positions = [...textPositions.current];
-
-  //   menuItems.forEach((_, index) => {
-  //     positions[index] = -index * 2; // Adjust the multiplier as needed
-  //   });
-
-  //   // Update the text positions
-  //   textPositions.current = positions;
-
-  //   console.log("Layout effect has")
-  // }, []); // Empty dependencies array to run once on mount
+  
 
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
 
@@ -118,6 +111,9 @@ const ScrollPage = () => {
       setTexture(loadedTexture);
     });
   }, []);
+
+  const textRefs = useRef<Array<any>>([]);
+ 
 
   return (
     <>
@@ -159,6 +155,7 @@ const ScrollPage = () => {
               ]}
               scale={[0.1, 0.1, 0.1]}
               fillOpacity={1}
+              ref={(ref) => (textRefs.current[index] = ref)}
             >
               {item}
             </Text>
