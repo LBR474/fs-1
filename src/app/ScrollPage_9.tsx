@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
@@ -44,12 +44,14 @@ const ScrollPage = () => {
   // );
   const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
 
-  // textRefs.current[0] = useRef<Object3D | null>(null);
-  // textRefs.current[1] = useRef<Object3D | null>(null);
+  textRefs.current[0] = useRef<Object3D | null>(null!);
+  textRefs.current[1] = useRef<Object3D | null>(null!);
 
-  for (let i = 0; i < menuItems.length; i++) {
-    textRefs.current.push(useRef<Object3D | null>(null));
-  }
+  // for (let i = 0; i < menuItems.length; i++) {
+  //   textRefs.current.push(useRef<Object3D | null>(null));
+  // }
+  
+
 
   useEffect(() => {
     // Register ScrollTrigger plugin
