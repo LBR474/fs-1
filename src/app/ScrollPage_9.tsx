@@ -23,14 +23,14 @@ const YourPage = () => {
   const menuItems = [
     "End poverty",
     "Clean, abundant water",
-    "Online government",
-    "Direct your taxes",
-    "Disclosure",
-    "Focus on peace",
-    "End the war on drugs",
-    "Free education",
-    "Free healthcare",
-    "No more jobs",
+    // "Online government",
+    // "Direct your taxes",
+    // "Disclosure",
+    // "Focus on peace",
+    // "End the war on drugs",
+    // "Free education",
+    // "Free healthcare",
+    // "No more jobs",
   ];
 
   // const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>(
