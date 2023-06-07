@@ -13,9 +13,9 @@ const ScrollPage = () => {
   const [scrollY, setScrollY] = useState(0);
   const [fillOpacNumber, setFillOpacNumber] = useState(0);
 
-  const texture = useLoader(TextureLoader, "/earth.jpg");
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.wrapT = THREE.RepeatWrapping;
+  // const texture = useLoader(TextureLoader, "/earth.jpg");
+  // texture.wrapS = THREE.RepeatWrapping;
+  // texture.wrapT = THREE.RepeatWrapping;
 
   const menuItems = [
     "End poverty",
@@ -100,7 +100,9 @@ const ScrollPage = () => {
 
           <mesh position={[0, 0, 0]}>
             <sphereGeometry />
-            <meshStandardMaterial map={texture} />
+            <meshStandardMaterial 
+            // map={texture} 
+            />
           </mesh>
           {menuItems.map((item, index) => (
             <Text
