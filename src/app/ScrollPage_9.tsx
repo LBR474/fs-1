@@ -1,20 +1,17 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
 import { Canvas, useLoader } from "@react-three/fiber";
 import { Stars, Text } from "@react-three/drei";
-import { Object3D, TextureLoader } from "three";
+import { TextureLoader } from "three";
 
 import * as THREE from "three";
 
 const ScrollPage = () => {
   const containerRef = useRef(null);
-  const bandedDivsRef = useRef<Array<HTMLDivElement | null>>(
-    Array(10).fill(null)
-  );
   const [scrollY, setScrollY] = useState(0);
-  const [fillOpacNumber, setfillOpacNumber] = useState(0);
+  const [fillOpacNumber, setFillOpacNumber] = useState(0);
 
   const texture = useLoader(TextureLoader, "/earth.jpg");
   texture.wrapS = THREE.RepeatWrapping;
@@ -33,12 +30,7 @@ const ScrollPage = () => {
     // "No more jobs",
   ];
 
- 
-
-  const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
-  for (let i = 0; i < menuItems.length; i++) {
-    textRefs.current.push(useRef<Object3D | null>(null));
-  }
+ const textPositions = useRef<number[]>([]);
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -55,29 +47,21 @@ const ScrollPage = () => {
       start: "top top+=100",
       end: "top top+=200",
       onEnter: () => {
-        if (
-          scrollY >= 0 &&
-          scrollY <= 100 &&
-          textRefs.current[0].current &&
-          textRefs.current[0].current.position.z < Math.PI
-        ) {
-          const textAnimation0 = () => {
-            setfillOpacNumber(1);
+        const updateTextPositions = () => {
+          const positions = textPositions.current;
 
-            textRefs.current[0].current!.position.z = scrollY / 100;
-          };
+          if (scrollY >= 0 && scrollY <= 100) {
+            positions[0] = scrollY / 100;
+            setFillOpacNumber(1);
+          } else if (scrollY >= 100 && scrollY <= 200) {
+            positions[1] = scrollY / 100;
+          }
 
-          textAnimation0();
-        } else if (
-          scrollY >= 100 &&
-          scrollY <= 200 &&
-          textRefs.current[1].current
-        ) {
-          const textAnimation1 = () => {
-            textRefs.current[1].current!.position.z = scrollY / 100;
-          };
-          textAnimation1();
-        }
+          // Update the text positions
+          textPositions.current = positions;
+        };
+
+        updateTextPositions();
       },
     });
 
@@ -127,8 +111,7 @@ const ScrollPage = () => {
               fontSize={0.5}
               color="white"
               maxWidth={10}
-              ref={textRefs.current[index]}
-              position={[0, 2, index]}
+              position={[0, 2, textPositions.current[index] || 0]}
               scale={[0.1, 0.1, 0.1]}
               fillOpacity={fillOpacNumber}
             >
@@ -139,7 +122,6 @@ const ScrollPage = () => {
       </div>
 
       <div className={styles.container} ref={containerRef}>
-       
         {/* Display window.scrollY */}
         <div className={styles.scrollY}>{scrollY}</div>
       </div>
