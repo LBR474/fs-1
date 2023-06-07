@@ -14,7 +14,7 @@ const ScrollPage = () => {
     Array(10).fill(null)
   );
   const [scrollY, setScrollY] = useState(0);
-  const [fillOpacNumber, setfillOpacNumber]=useState(0)
+  const [fillOpacNumber, setfillOpacNumber] = useState(0);
 
   const texture = useLoader(TextureLoader, "/earth.jpg");
   texture.wrapS = THREE.RepeatWrapping;
@@ -42,16 +42,14 @@ const ScrollPage = () => {
   //     useRef<Object3D | null>(null)
   //   )
   // );
-  const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
 
   // textRefs.current[0] = useRef<Object3D | null>(null!);
   // textRefs.current[1] = useRef<Object3D | null>(null!);
 
+  const textRefs = useRef<Array<React.MutableRefObject<Object3D | null>>>([]);
   for (let i = 0; i < menuItems.length; i++) {
     textRefs.current.push(useRef<Object3D | null>(null));
   }
-  
-
 
   useEffect(() => {
     // Register ScrollTrigger plugin
@@ -61,21 +59,6 @@ const ScrollPage = () => {
     gsap.config({
       autoKillThreshold: 0.01,
     });
-
-    // Define the animation for banded-div 0 (moving up the page)
-    const bandedDiv0Animation = gsap.to(textRefs.current[0], {
-      x: (scrollY + 1) * 3,
-      duration: 1,
-      opacity: 1,
-      paused: true,
-    });
-    const bandedDiv1Animation = gsap.to(bandedDivsRef.current[1], {
-      x: scrollY * -3,
-      duration: 1,
-      opacity: 1,
-      paused: true,
-    });
-    let z_pos = -Math.PI;
 
     // Set up the ScrollTrigger
     ScrollTrigger.create({
@@ -90,10 +73,9 @@ const ScrollPage = () => {
           textRefs.current[0].current.position.z < Math.PI
         ) {
           const textAnimation0 = () => {
-            setfillOpacNumber(1)
-           
-            textRefs.current[0].current!.position.z =
-              scrollY / 100;
+            setfillOpacNumber(1);
+
+            textRefs.current[0].current!.position.z = scrollY / 100;
           };
 
           textAnimation0();
@@ -103,12 +85,11 @@ const ScrollPage = () => {
           textRefs.current[1].current
         ) {
           const textAnimation1 = () => {
-             textRefs.current[1].current!.position.z = scrollY / 100;
-          }
+            textRefs.current[1].current!.position.z = scrollY / 100;
+          };
           textAnimation1();
         }
       },
-    
     });
 
     // Scroll event listener to update scrollY
@@ -161,7 +142,6 @@ const ScrollPage = () => {
               position={[0, 2, index]}
               scale={[0.1, 0.1, 0.1]}
               fillOpacity={fillOpacNumber}
-              
             >
               {item}
             </Text>
