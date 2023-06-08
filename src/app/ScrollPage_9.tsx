@@ -115,7 +115,7 @@ const ScrollPage = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY, menuItems, window.innerWidth]);
+  }, [scrollY, menuItems]);
 
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
 
