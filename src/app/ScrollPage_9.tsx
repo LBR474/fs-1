@@ -1,4 +1,10 @@
-import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { gsap } from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import styles from "./STPage.module.css";
@@ -32,6 +38,7 @@ const ScrollPage = () => {
 
   const textPositions = useRef<number[]>([]);
   const textYPositions = useRef<number[]>([]);
+  const textXPositions = useRef<number[]>([]);
 
   useEffect(() => {
     setFillOpacNumber(1);
@@ -45,18 +52,18 @@ const ScrollPage = () => {
 
     textPositions.current = new Array(menuItems.length).fill(0);
     textYPositions.current = new Array(menuItems.length).fill(0);
+    textXPositions.current = new Array(menuItems.length).fill(0);
 
     // Set up the ScrollTrigger
     ScrollTrigger.create({
       trigger: containerRef.current,
-      start: "top top+=100",
-     // end: "top top+=200",
+      //start: "top top+=100",
+      // end: "top top+=200",
       onEnter: () => {
         const updateTextPositions = () => {
-          
-          
           const positions = [...textPositions.current];
           const Ypositions = [...textYPositions.current];
+          const Xpositions = [...textXPositions.current];
 
           const positionOffset = scrollY / 100; // Adjust the scrollY value as needed
 
@@ -66,19 +73,30 @@ const ScrollPage = () => {
               const boundingBox = new THREE.Box3().setFromObject(textRef);
               // positions[index] = boundingBox.min.z;
               // Ypositions[index] = Math.cos(positionOffset - index) + 1;
-              console.log('TextRef position', textRef.position)
+              console.log("TextRef position", textRef.position);
             }
-           
-            
-             positions[index] =  (positionOffset - index);
-             Ypositions[index] = Math.cos(positionOffset - index) + 1;
-            
+
+            positions[index] = positionOffset - index;
+            Ypositions[index] = Math.cos(positionOffset - index) + 1;
+            if (positionOffset - index > 3) {
+              Xpositions[index] = 0;
+            } else {
+              Xpositions[index] = positionOffset - index;
+            }
           });
 
           // Update the text positions
           textPositions.current = positions;
           textYPositions.current = Ypositions;
-          console.log('Z positions: ', positions, "Y positions: ", Ypositions)
+          textXPositions.current = Xpositions;
+          console.log(
+            "Z positions:",
+            positions,
+            "Y positions:",
+            Ypositions,
+            "X positions:",
+            [...Xpositions]
+          );
         };
 
         updateTextPositions();
@@ -97,11 +115,11 @@ const ScrollPage = () => {
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [scrollY, menuItems]);
-
-  
+  }, [scrollY, menuItems, window.innerWidth]);
 
   const [texture, setTexture] = useState<THREE.Texture | undefined>(undefined); // Explicitly define the type
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const textureLoader = new TextureLoader();
@@ -109,12 +127,41 @@ const ScrollPage = () => {
       loadedTexture.wrapS = THREE.RepeatWrapping;
       loadedTexture.wrapT = THREE.RepeatWrapping;
       setTexture(loadedTexture);
+      setIsLoading(false); // Set loading state to false once the texture is loaded
     });
   }, []);
-
   const textRefs = useRef<Array<any>>([]);
- 
 
+  const [screenWidthReact, setscreenWidthreact] = useState(1);
+
+  const MeshRef = useRef<THREE.Mesh>(null)
+
+   useEffect(() => {
+     const handleResize = () => {
+       if (window.innerWidth < 1000) {
+         gsap.to(MeshRef.current!.scale, {
+           duration: 1.5,
+           x: 0.5,
+           y: 0.5,
+           z: 0.5,
+         });
+         //setscreenWidthreact(0.5);
+       } else {
+         gsap.to(MeshRef.current!.scale, {
+           duration: 1.5,
+           x: 1.0,
+           y: 1.0,
+           z: 1.0,
+         });
+       }
+     };
+
+     window.addEventListener("resize", handleResize);
+
+     return () => {
+       window.removeEventListener("resize", handleResize);
+     };
+   }, []);
   return (
     <>
       <div className={styles.CanvasContainer}>
@@ -134,10 +181,15 @@ const ScrollPage = () => {
             speed={1}
           />
 
-          <mesh position={[0, 1, 0]}>
-            <sphereGeometry />
-            <meshStandardMaterial map={texture} />
-          </mesh>
+          {!isLoading && ( // Render the mesh only when the texture is loaded
+            <mesh ref ={MeshRef}
+              position={[0, 1, 0]}
+              scale={[screenWidthReact, screenWidthReact, screenWidthReact]}
+            >
+              <sphereGeometry />
+              <meshStandardMaterial map={texture} />
+            </mesh>
+          )}
           {menuItems.map((item, index) => (
             <Text
               key={index}
@@ -150,7 +202,7 @@ const ScrollPage = () => {
               position={[
                 0,
 
-                textYPositions.current[index],
+                0.0 + textYPositions.current[index],
                 textPositions.current[index],
               ]}
               scale={[0.1, 0.1, 0.1]}

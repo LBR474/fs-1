@@ -4,31 +4,40 @@
 }
 
 @media screen and (max-width: 780px) {
-  /* .CanvasContainer {
-    width: 80%;
-  } */
-  /* .topCorner {
-    width: 100%;
+  .CanvasContainer {
+    width: 90%; /* Shrink the width of the container */
   }
-  .floatLeft {
-    height: 675px;
-  } */
-  /* .floatRight {
-    box-sizing: border-box; 
-    height: 50%;
-    width: 90%;
+  
+  .CanvasContainer Canvas {
+    width: 70%; /* Shrink the width of the canvas */
+    height: auto; /* Adjust the height accordingly */
   }
-  .floatLeftInner {
-    width: 100%;
-    height: 100%;
-  } */
+  
+  .CanvasContainer mesh {
+    transform: scale(0.5, 2.5, 0.5); 
+  }
+}
+
+@media screen and (min-width: 781px) {
+  .CanvasContainer {
+    width: 100%; /* Shrink the width of the container */
+  }
+  
+  .CanvasContainer Canvas {
+    width: 1000%; /* Shrink the width of the canvas */
+    height: auto; /* Adjust the height accordingly */
+  }
+  
+  .CanvasContainer mesh {
+    transform: scale(0.5, 2.5, 0.5); 
+  }
 }
 
 .container {
   
   left: 0px;
   width: 100vw;
-  height: 200vh;
+  height: 250vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +50,7 @@
   position: fixed;
   top: 0px;
   height: 200vh;
-  width: 100vw;
+  /* width: 100vw; */
   display: flex;
   flex-direction: column;
   align-items: center;
