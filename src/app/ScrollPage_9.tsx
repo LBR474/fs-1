@@ -19,9 +19,7 @@ const ScrollPage = () => {
   const [scrollY, setScrollY] = useState(0);
   const [fillOpacNumber, setFillOpacNumber] = useState(1);
 
-  // const texture = useLoader(TextureLoader, "/earth.jpg");
-  // texture.wrapS = THREE.RepeatWrapping;
-  // texture.wrapT = THREE.RepeatWrapping;
+  
 
   const menuItems = [
     "End poverty",
@@ -41,7 +39,7 @@ const ScrollPage = () => {
   const textXPositions = useRef<number[]>([]);
 
   useEffect(() => {
-    setFillOpacNumber(1);
+    
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
@@ -73,6 +71,7 @@ const ScrollPage = () => {
               const boundingBox = new THREE.Box3().setFromObject(textRef);
               // positions[index] = boundingBox.min.z;
               // Ypositions[index] = Math.cos(positionOffset - index) + 1;
+              setFillOpacNumber(1);
               console.log("TextRef position", textRef.position);
             }
 
@@ -161,7 +160,7 @@ const ScrollPage = () => {
      return () => {
        window.removeEventListener("resize", handleResize);
      };
-   }, []);
+   }, [window.innerWidth]);
   return (
     <>
       <div className={styles.CanvasContainer}>
