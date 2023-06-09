@@ -133,36 +133,57 @@ const ScrollPage = () => {
 
   const [screenWidthReact, setscreenWidthreact] = useState(1);
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   const[y_pos, set_y_pos] = useState(0.0)
 
   const MeshRef = useRef<THREE.Mesh>(null)
 
    useEffect(() => {
+
+     
      const handleResize = () => {
-       if (window.innerWidth < 1000) {
-         gsap.to(MeshRef.current!.scale, {
-           duration: 1.5,
-           x: 0.5,
-           y: 0.5,
-           z: 0.5,
-         });
-         set_y_pos(-0.5)
-       } else {
-         gsap.to(MeshRef.current!.scale, {
-           duration: 1.5,
-           x: 1.0,
-           y: 1.0,
-           z: 1.0,
-         });
-       }
+      if (windowWidth < 780) {
+        if (MeshRef.current) {
+          gsap.to(MeshRef.current.scale, {
+            duration: 1.5,
+            x: 0.5,
+            y: 0.5,
+            z: 0.5,
+          });
+        }
+        set_y_pos(-0.5);
+        console.log(windowWidth);
+      } else {
+        if (MeshRef.current) {
+          gsap.to(MeshRef.current.scale, {
+            duration: 1.5,
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
+          });
+        }
+      }
      };
 
      window.addEventListener("resize", handleResize);
 
+     const checkScreenWidth = () => {
+       if (windowWidth < 780) {
+         handleResize();
+       }
+     };
+     window.addEventListener("load", checkScreenWidth)
+     // Call checkScreenWidth on component mount
+     checkScreenWidth();
+
      return () => {
        window.removeEventListener("resize", handleResize);
+       window.removeEventListener("Load", checkScreenWidth);
      };
-   }, [window.innerWidth]);
+   }, []);
+
+
   return (
     <>
       <div className={styles.CanvasContainer}>
