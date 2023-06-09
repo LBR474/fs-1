@@ -36,7 +36,7 @@ const ScrollPage = () => {
     "No more jobs",
   ];
 
-  const textPositions = useRef<number[]>([]);
+  const textZPositions = useRef<number[]>([]);
   const textYPositions = useRef<number[]>([]);
   const textXPositions = useRef<number[]>([]);
 
@@ -50,7 +50,7 @@ const ScrollPage = () => {
       autoKillThreshold: 0.01,
     });
 
-    textPositions.current = new Array(menuItems.length).fill(0);
+    textZPositions.current = new Array(menuItems.length).fill(0);
     textYPositions.current = new Array(menuItems.length).fill(0);
     textXPositions.current = new Array(menuItems.length).fill(0);
 
@@ -60,8 +60,8 @@ const ScrollPage = () => {
       //start: "top top+=100",
       // end: "top top+=200",
       onEnter: () => {
-        const updateTextPositions = () => {
-          const positions = [...textPositions.current];
+        const updatetextZPositions = () => {
+          const Zpositions = [...textZPositions.current];
           const Ypositions = [...textYPositions.current];
           const Xpositions = [...textXPositions.current];
 
@@ -76,7 +76,7 @@ const ScrollPage = () => {
               console.log("TextRef position", textRef.position);
             }
 
-            positions[index] = positionOffset - index;
+            Zpositions[index] = positionOffset - index;
             Ypositions[index] = Math.cos(positionOffset - index) + 1;
             if (positionOffset - index > 3) {
               Xpositions[index] = 0;
@@ -86,20 +86,21 @@ const ScrollPage = () => {
           });
 
           // Update the text positions
-          textPositions.current = positions;
+          textZPositions.current = Zpositions;
           textYPositions.current = Ypositions;
           textXPositions.current = Xpositions;
           console.log(
             "Z positions:",
-            positions,
-            "Y positions:",
+            Zpositions,
+            "\n Y positions:",
             Ypositions,
-            "X positions:",
-            [...Xpositions]
+            "\n X positions:",
+            Xpositions
+            // [...Xpositions]
           );
         };
 
-        updateTextPositions();
+        updatetextZPositions();
       },
     });
 
@@ -134,6 +135,8 @@ const ScrollPage = () => {
 
   const [screenWidthReact, setscreenWidthreact] = useState(1);
 
+  const [y_pos_start, setY_pos_start] = useState(0.0)
+
   const MeshRef = useRef<THREE.Mesh>(null)
 
    useEffect(() => {
@@ -145,7 +148,7 @@ const ScrollPage = () => {
            y: 0.5,
            z: 0.5,
          });
-         //setscreenWidthreact(0.5);
+         setY_pos_start(-0.5)
        } else {
          gsap.to(MeshRef.current!.scale, {
            duration: 1.5,
@@ -200,10 +203,10 @@ const ScrollPage = () => {
               color="white"
               maxWidth={10}
               position={[
-                0,
+                textXPositions.current[index],
 
-                0.0 + textYPositions.current[index],
-                textPositions.current[index],
+                y_pos_start + textYPositions.current[index],
+                textZPositions.current[index],
               ]}
               scale={[0.1, 0.1, 0.1]}
               fillOpacity={1}
