@@ -78,7 +78,7 @@ const ScrollPage = () => {
 
             Zpositions[index] = positionOffset - index;
             Ypositions[index] = Math.cos(positionOffset - index) + 1;
-            if (positionOffset - index > 3) {
+            if (positionOffset - index > -1) {
               Xpositions[index] = 0;
             } else {
               Xpositions[index] = positionOffset - index;
