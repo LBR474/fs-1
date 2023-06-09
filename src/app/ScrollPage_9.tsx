@@ -173,13 +173,10 @@ const ScrollPage = () => {
          handleResize();
        }
      };
-     window.addEventListener("load", checkScreenWidth)
-     // Call checkScreenWidth on component mount
-     checkScreenWidth();
+    
 
      return () => {
        window.removeEventListener("resize", handleResize);
-       window.removeEventListener("Load", checkScreenWidth);
      };
    }, []);
 
