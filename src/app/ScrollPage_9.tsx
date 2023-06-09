@@ -19,7 +19,9 @@ const ScrollPage = () => {
   const [scrollY, setScrollY] = useState(0);
   const [fillOpacNumber, setFillOpacNumber] = useState(1);
 
-  
+  // const texture = useLoader(TextureLoader, "/earth.jpg");
+  // texture.wrapS = THREE.RepeatWrapping;
+  // texture.wrapT = THREE.RepeatWrapping;
 
   const menuItems = [
     "End poverty",
@@ -39,7 +41,7 @@ const ScrollPage = () => {
   const textXPositions = useRef<number[]>([]);
 
   useEffect(() => {
-    
+    setFillOpacNumber(1);
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
 
@@ -71,7 +73,6 @@ const ScrollPage = () => {
               const boundingBox = new THREE.Box3().setFromObject(textRef);
               // positions[index] = boundingBox.min.z;
               // Ypositions[index] = Math.cos(positionOffset - index) + 1;
-              setFillOpacNumber(1);
               console.log("TextRef position", textRef.position);
             }
 
@@ -133,54 +134,34 @@ const ScrollPage = () => {
 
   const [screenWidthReact, setscreenWidthreact] = useState(1);
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const MeshRef = useRef<THREE.Mesh>(null);
 
-  const[y_pos, set_y_pos] = useState(0.0)
-
-  const MeshRef = useRef<THREE.Mesh>(null)
-
-   useEffect(() => {
-
-     
-     const handleResize = () => {
-      if (windowWidth < 780) {
-        if (MeshRef.current) {
-          gsap.to(MeshRef.current.scale, {
-            duration: 1.5,
-            x: 0.5,
-            y: 0.5,
-            z: 0.5,
-          });
-        }
-        set_y_pos(-0.5);
-        console.log(windowWidth);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1000) {
+        gsap.to(MeshRef.current!.scale, {
+          duration: 1.5,
+          x: 0.5,
+          y: 0.5,
+          z: 0.5,
+        });
+        //setscreenWidthreact(0.5);
       } else {
-        if (MeshRef.current) {
-          gsap.to(MeshRef.current.scale, {
-            duration: 1.5,
-            x: 1.0,
-            y: 1.0,
-            z: 1.0,
-          });
-        }
+        gsap.to(MeshRef.current!.scale, {
+          duration: 1.5,
+          x: 1.0,
+          y: 1.0,
+          z: 1.0,
+        });
       }
-     };
+    };
 
-     window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize);
 
-     const checkScreenWidth = () => {
-       if (windowWidth < 780) {
-         handleResize();
-       }
-     };
-    
-
-     return () => {
-       window.removeEventListener("resize", handleResize);
-     };
-   }, []);
-
-
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
   return (
     <>
       <div className={styles.CanvasContainer}>
@@ -201,7 +182,8 @@ const ScrollPage = () => {
           />
 
           {!isLoading && ( // Render the mesh only when the texture is loaded
-            <mesh ref ={MeshRef}
+            <mesh
+              ref={MeshRef}
               position={[0, 1, 0]}
               scale={[screenWidthReact, screenWidthReact, screenWidthReact]}
             >
@@ -221,7 +203,7 @@ const ScrollPage = () => {
               position={[
                 0,
 
-                y_pos + textYPositions.current[index],
+                0.0 + textYPositions.current[index],
                 textPositions.current[index],
               ]}
               scale={[0.1, 0.1, 0.1]}
