@@ -133,6 +133,8 @@ const ScrollPage = () => {
 
   const [screenWidthReact, setscreenWidthreact] = useState(1);
 
+  const[y_pos, set_y_pos] = useState(0.0)
+
   const MeshRef = useRef<THREE.Mesh>(null)
 
    useEffect(() => {
@@ -144,7 +146,7 @@ const ScrollPage = () => {
            y: 0.5,
            z: 0.5,
          });
-         //setscreenWidthreact(0.5);
+         set_y_pos(-0.5)
        } else {
          gsap.to(MeshRef.current!.scale, {
            duration: 1.5,
@@ -201,7 +203,7 @@ const ScrollPage = () => {
               position={[
                 0,
 
-                0.0 + textYPositions.current[index],
+                y_pos + textYPositions.current[index],
                 textPositions.current[index],
               ]}
               scale={[0.1, 0.1, 0.1]}
