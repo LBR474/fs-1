@@ -60,6 +60,15 @@ const ScrollPage = () => {
       //start: "top top+=100",
       // end: "top top+=200",
       onEnter: () => {
+        if (window.innerWidth < 780) {
+           gsap.to(MeshRef.current!.scale, {
+             duration: 1.5,
+             x: 0.5,
+             y: 0.5,
+             z: 0.5,
+           });
+           set_y_pos(-0.5)
+        }
         const updateTextPositions = () => {
           const positions = [...textPositions.current];
           const Ypositions = [...textYPositions.current];
@@ -138,13 +147,14 @@ const ScrollPage = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 1000) {
+      if (window.innerWidth < 780) {
         gsap.to(MeshRef.current!.scale, {
           duration: 1.5,
           x: 0.5,
           y: 0.5,
           z: 0.5,
         });
+        set_y_pos(-0.5)
         //setscreenWidthreact(0.5);
       } else {
         gsap.to(MeshRef.current!.scale, {
@@ -162,6 +172,8 @@ const ScrollPage = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const [y_pos, set_y_pos] = useState(0.0)
   return (
     <>
       <div className={styles.CanvasContainer}>
@@ -203,7 +215,7 @@ const ScrollPage = () => {
               position={[
                 0,
 
-                0.0 + textYPositions.current[index],
+                y_pos + textYPositions.current[index],
                 textPositions.current[index],
               ]}
               scale={[0.1, 0.1, 0.1]}
