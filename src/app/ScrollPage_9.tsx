@@ -43,7 +43,7 @@ const ScrollPage = () => {
 
   
   useEffect(() => {
-    if (window.innerWidth < 780 && MeshRef.current && scrollY < 1) {
+    if (window.innerWidth < 780 && MeshRef.current! && scrollY < 1) {
       gsap.to(MeshRef.current!.scale, {
         duration: 1.5,
         x: 0.5,
