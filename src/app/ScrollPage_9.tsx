@@ -24,7 +24,7 @@ const ScrollPage = () => {
   const textYPositions = useRef<number[]>([]);
   const textXPositions = useRef<number[]>([]);
   const textRefs = useRef<Array<any>>([]);
-  const MeshRef = useRef<THREE.Mesh>(null);
+  const MeshRef = useRef<THREE.Mesh>(null!);
   const [screenWidthReact, setscreenWidthreact] = useState(1);
   
 
