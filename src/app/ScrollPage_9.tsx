@@ -18,10 +18,15 @@ const ScrollPage = () => {
   const containerRef = useRef(null);
   const [scrollY, setScrollY] = useState(0);
   const [fillOpacNumber, setFillOpacNumber] = useState(1);
+  const [y_pos, set_y_pos] = useState(0.0);
 
-  // const texture = useLoader(TextureLoader, "/earth.jpg");
-  // texture.wrapS = THREE.RepeatWrapping;
-  // texture.wrapT = THREE.RepeatWrapping;
+  const textPositions = useRef<number[]>([]);
+  const textYPositions = useRef<number[]>([]);
+  const textXPositions = useRef<number[]>([]);
+  const textRefs = useRef<Array<any>>([]);
+  const MeshRef = useRef<THREE.Mesh>(null);
+  const [screenWidthReact, setscreenWidthreact] = useState(1);
+  
 
   const menuItems = [
     "End poverty",
@@ -36,10 +41,7 @@ const ScrollPage = () => {
     "No more jobs",
   ];
 
-  const textPositions = useRef<number[]>([]);
-  const textYPositions = useRef<number[]>([]);
-  const textXPositions = useRef<number[]>([]);
-
+  
   useEffect(() => {
     setFillOpacNumber(1);
     // Register ScrollTrigger plugin
@@ -138,14 +140,10 @@ const ScrollPage = () => {
       setTexture(loadedTexture);
       setIsLoading(false); // Set loading state to false once the texture is loaded
     });
-  }, []);
-  const textRefs = useRef<Array<any>>([]);
+  // }, []);
+ 
 
-  const [screenWidthReact, setscreenWidthreact] = useState(1);
-
-  const MeshRef = useRef<THREE.Mesh>(null);
-
-  useEffect(() => {
+  // useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 780) {
         gsap.to(MeshRef.current!.scale, {
@@ -163,6 +161,7 @@ const ScrollPage = () => {
           y: 1.0,
           z: 1.0,
         });
+        set_y_pos(0.0);
       }
     };
 
@@ -173,7 +172,7 @@ const ScrollPage = () => {
     };
   }, []);
 
-  const [y_pos, set_y_pos] = useState(0.0)
+  
   return (
     <>
       <div className={styles.CanvasContainer}>
