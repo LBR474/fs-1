@@ -43,6 +43,15 @@ const ScrollPage = () => {
 
   
   useEffect(() => {
+    if (window.innerWidth < 780 && MeshRef.current && scrollY < 1) {
+      gsap.to(MeshRef.current!.scale, {
+        duration: 1.5,
+        x: 0.5,
+        y: 0.5,
+        z: 0.5,
+      });
+      set_y_pos(-0.5);
+    }
     setFillOpacNumber(1);
     // Register ScrollTrigger plugin
     gsap.registerPlugin(ScrollTrigger);
