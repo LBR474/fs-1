@@ -62,7 +62,7 @@ const ScrollPage = () => {
       //start: "top top+=100",
       // end: "top top+=200",
       onEnter: () => {
-        if (window.innerWidth < 780) {
+        if (window.innerWidth < 780 && MeshRef.current) {
            gsap.to(MeshRef.current!.scale, {
              duration: 1.5,
              x: 0.5,
